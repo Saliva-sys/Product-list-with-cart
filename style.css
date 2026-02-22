@@ -22,6 +22,7 @@ body {
     background-color: var(--Rose__100); /* Pridané pozadie z návrhu */
 }
 
+/*1. zakladne rozmietnenie*/
 picture img {
     display: block;
     width: 100%;
@@ -60,6 +61,7 @@ picture img {
     row-gap: clamp(1.5rem, calc(1.324rem + 0.751vw), 2rem);
 }
 
+/*2. umiestnenie pre button na obrazok */
 /* Container needed to position the button. Adjust the width as needed */
 .product__image--container {
     display: flex;
@@ -101,6 +103,60 @@ picture img {
     padding-inline: clamp(1.4rem, calc(1.382rem + 0.075vw), 1.45rem) 0.5rem;    
 }
 
+/*3. definovanie selected produktu */
+/* Keď má celá karta triedu is-selected, obrázok dostane rámček */
+.product__card.is-selected .product__image--container picture img {
+    border: 1px solid var(--Red);
+}
+
+/* Predvolene skryjeme ovládanie množstva */
+.quantity-content {
+    display: none; 
+}
+
+/* Keď je tlačidlo AKTÍVNE */
+.product__add--btn.active {
+    background-color: var(--Red);
+    border: none;
+    padding-inline: 0.8rem;
+    justify-content: space-between; /* Plus a mínus budú na krajoch */
+}
+
+/* Skryjeme "Add to Cart" v aktívnom stave */
+.product__add--btn.active .add-content {
+    display: none;
+}
+
+/* Ukážeme "Quantity" v aktívnom stave */
+.product__add--btn.active .quantity-content {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+/*Stylovanie ikoniek plus a mínus*/
+.qty-btn {
+    width: 20px;
+    height: 20px;
+    border: 1px solid white;
+    border-radius: 50%;
+    padding: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s, filter 0.2s;
+    color: var(--Rose__50);
+}
+
+.qty-btn:hover {
+    background-color: white;
+    /* Tento filter zmení bielu ikonku na červenú pri hoveri */
+    filter: brightness(0) saturate(100%) invert(26%) sepia(89%) saturate(1556%) hue-rotate(345deg) brightness(91%) contrast(101%);
+}
+
+
+
+/*4. uprava obsahu pre produkty*/
 .product__info {
     margin-block-start: 2.25rem; 
 }
@@ -134,7 +190,7 @@ picture img {
     color: var(--Red);
 }
 
-/* KOŠÍK - Upravený tak, aby sa centroval automaticky */
+/*5. umiestnenie a zadefinovanie prazdneho kosika*/
 .cart__summary {
     display: flex;
     flex-direction: column;
@@ -169,6 +225,7 @@ picture img {
     margin-inline-start: -1.55rem;
 }
 
+/*6. uprava footer*/
 .attribution {     
     font-size: 0.6875rem; 
     text-align: center;   
