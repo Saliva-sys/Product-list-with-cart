@@ -99,14 +99,14 @@ picture img {
     background-color: var(--Rose__50);
 }
 
-.product__add--btn img {
+/*.product__add--btn img {
     padding-inline: clamp(1.4rem, calc(1.382rem + 0.075vw), 1.45rem) 0.5rem;    
-}
+}*/
 
 /*3. definovanie selected produktu */
 /* Keď má celá karta triedu is-selected, obrázok dostane rámček */
 .product__card.is-selected .product__image--container picture img {
-    border: 1px solid var(--Red);
+    border: 2px solid var(--Red);
 }
 
 /* Predvolene skryjeme ovládanie množstva */
@@ -114,12 +114,14 @@ picture img {
     display: none; 
 }
 
+
 /* Keď je tlačidlo AKTÍVNE */
 .product__add--btn.active {
     background-color: var(--Red);
     border: none;
-    padding-inline: 0.8rem;
-    justify-content: space-between; /* Plus a mínus budú na krajoch */
+    padding: 0.8rem 0.8rem; /* Rovnomerný padding pre aktívny stav */
+    display: flex;
+    justify-content: center;
 }
 
 /* Skryjeme "Add to Cart" v aktívnom stave */
@@ -140,12 +142,16 @@ picture img {
 .qty-btn {
     width: 20px;
     height: 20px;
+    flex-shrink: 0; /* Zákaz rozťahovania */
     border: 1px solid white;
     border-radius: 50%;
-    padding: 4px;
     cursor: pointer;
     transition: background-color 0.2s, filter 0.2s;
     color: var(--Rose__50);
+    /* Vystredenie ikonky vo vnútri krúžku */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .qty-btn:hover {
