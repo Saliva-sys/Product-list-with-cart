@@ -7,6 +7,7 @@
     --Rose__400: hsl(7, 20%, 60%);
     --Rose__500: hsl(12, 20%, 44%);
     --Rose__900: hsl(14, 65%, 9%);
+    --Blue: hsl(228, 45%, 44%);
 }
 
 * {
@@ -18,7 +19,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Red Hat Text', sans-serif;
-    background-color: var(--Rose__50); /* Pridané pozadie z návrhu */
+    background-color: var(--Rose__100); /* Pridané pozadie z návrhu */
 }
 
 picture img {
@@ -34,10 +35,10 @@ picture img {
     display: grid;
     grid-template-columns: 1fr;
     width: 100%;
-    max-width: 600px; /* Zvýšené z 350px, aby to na mobile nepôsobilo utopene */
+    max-width: clamp(37.5rem, calc(22.887rem + 62.347vw), 79rem); /* Zvýšené z 350px, aby to na mobile nepôsobilo utopene */
     margin: 0 auto;
-    padding-block-start: 1.3rem;
-    padding-inline: 1.5rem;
+    padding-block-start: clamp(1.281rem, calc(-0.134rem + 6.038vw), 5.3rem);
+    padding-inline: 24px;
 }
 
 .product__page {
@@ -56,6 +57,7 @@ picture img {
     padding-block-start: 1.9rem;
     display: grid;
     grid-template-columns: 1fr;
+    row-gap: clamp(1.5rem, calc(1.324rem + 0.751vw), 2rem);
 }
 
 /* Container needed to position the button. Adjust the width as needed */
@@ -73,7 +75,7 @@ picture img {
 .product__image--container picture {
     width: 100%;
     height: auto;
-    margin: 0;
+    margin: 0;    
 }
 
 /* Style the button and place it in the middle of the container/image */
@@ -83,20 +85,53 @@ picture img {
     position: absolute;
     margin: 0;
     width: 49%;
-    top: 90%;
-    font-size: 13.5px;
+    top: 89.5%;
+    font-size: 0.84375rem;
     font-weight: 400;
-    letter-spacing: 0.045rem;
-    padding-block-start: 0.7rem;
-    padding-block-end: 0.55rem;
-    border-radius: 1.35em;
-    border: 1px solid var(--Rose__900);
+    letter-spacing: 0.042rem;
+    color: var(--Rose__900);
+    padding-block-start: 0.75rem;
+    padding-block-end: 0.65rem;
+    border-radius: 1.35rem;
+    border: 1px solid var(--Rose__500);
     background-color: var(--Rose__50);
 }
 
 .product__add--btn img {
-    padding-inline-start: 1.4rem;
-    padding-inline-end: 0.5rem;
+    padding-inline: clamp(1.4rem, calc(1.382rem + 0.075vw), 1.45rem) 0.5rem;    
+}
+
+.product__info {
+    margin-block-start: 2.25rem; 
+}
+
+.product__category {    
+    font-size: 0.84375rem;
+    font-weight: 400;
+    letter-spacing: 0.015rem;
+    color: var(--Rose__500);
+}
+
+.product__name {
+    margin: 0;
+    font-size: 1rem;
+    padding-block-start: 0.25rem;
+    padding-block-end: 0.25rem;
+    font-weight: 600;
+    color: var(--Rose__900);
+    letter-spacing: -0.005rem;
+}
+
+.product__price {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--Red);
+}
+
+.product__price::before {
+    content: "$";
+    color: var(--Red);
 }
 
 /* KOŠÍK - Upravený tak, aby sa centroval automaticky */
@@ -105,9 +140,11 @@ picture img {
     flex-direction: column;
     align-items: center; /* Toto nahradí tvoj padding 105px */
     text-align: center;
-    background-color: white;
     border-radius: 0.75rem;
-    margin-top: 2rem;
+    margin-top: clamp(0.23rem, calc(2.623rem - 2.659vw), 2rem);
+    padding-inline-start: 1.55rem;
+    padding-block: 0.05rem 2.5rem;
+    background-color: var(--Rose__50);
 }
 
 .cart__quantity {
@@ -115,13 +152,31 @@ picture img {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--Red);
+    margin-bottom: 2.4rem;
 }
+
+.cart__summary img {
+        /* Paddingy 105px sú preč, align-items: center to vyriešil */
+        margin-bottom: 1.1rem;
+        margin-inline-start: -1.5rem;
+    }
 
 .cart__info {
     font-size: 0.875rem;
     font-weight: 600;
     color: var(--Rose__500);    
     letter-spacing: -0.005rem;
+    margin-inline-start: -1.55rem;
+}
+
+.attribution {     
+    font-size: 0.6875rem; 
+    text-align: center;   
+    padding-block-start: 0.5rem;  
+}
+
+.attribution-link { 
+    color: var(--Blue); 
 }
 
 /* DESKTOP VERZIA */
@@ -129,10 +184,7 @@ picture img {
     .card {
         grid-template-columns: 1fr 385px;
         align-items: flex-start;
-        max-width: 1264px; 
         gap: 2rem;
-        padding-block-start: 5.3rem;
-        padding-inline-start: 24px;
     }
 
     .card__deserts {
@@ -140,27 +192,13 @@ picture img {
         column-gap: 1.5rem;
     }
 
+    .product__add--btn {
+        width: 64%;
+        top: 91%;   
+    }
+
     .cart__summary {
-        margin-top: 0.23rem; /* Na desktope nepotrebujeme horný margin */
         position: sticky; /* Košík bude cestovať s tebou pri skrolovaní */
         top: 2rem;
-        padding-inline-start: 1.55rem;
-        padding-block-start: 0.05rem;
-        padding-block-end: 2.6rem;
-        border-radius: 0.75rem;   
-    }
-
-    .cart__quantity {
-        margin-bottom: 2.5rem;
-    }
-
-    .cart__summary img {
-        /* Paddingy 105px sú preč, align-items: center to vyriešil */
-        margin-bottom: 1rem;
-        margin-inline-start: -1.5rem;
-    }
-
-    .cart__info {
-        margin-inline-start: -1.5rem;
-    }
+    }    
 }
