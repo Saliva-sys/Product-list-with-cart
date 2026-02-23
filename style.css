@@ -22,7 +22,7 @@ body {
     background-color: var(--Rose__100); /* Pridané pozadie z návrhu */
 }
 
-/*1. zakladne rozmietnenie*/
+/*1. definovanie obrazkov a hlavneho nadpisu*/
 picture img {
     display: block;
     width: 100%;
@@ -31,7 +31,14 @@ picture img {
     border-radius: 0.5rem;
 }
 
-/* HLAVNÝ KONTAJNER */
+.card__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--Rose__900);
+}
+
+/* 2. definovanie hlavneho kontajnera */
 .card {
     display: grid;
     grid-template-columns: 1fr;
@@ -42,131 +49,16 @@ picture img {
     padding-inline: 24px;
 }
 
-.product__page {
-    width: 100%;
-}
-
-.card__title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin: 0;
-    color: var(--Rose__900);
-}
-
+/* 3. definovanie rozlozenia produktov */
 .card__deserts {
-    margin: 0;
-    padding-block-start: 1.9rem;
     display: grid;
     grid-template-columns: 1fr;
-    row-gap: clamp(1.5rem, calc(1.324rem + 0.751vw), 2rem);
-}
-
-/*2. umiestnenie pre button na obrazok */
-/* Container needed to position the button. Adjust the width as needed */
-.product__image--container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    width: 100%;
     margin: 0;
+    row-gap: clamp(1.5rem, calc(1.313rem + 0.796vw), 2.03rem);
+    padding-block-start: 1.9rem;
 }
 
-/* Make the image responsive */
-.product__image--container picture {
-    width: 100%;
-    height: auto;
-    margin: 0;    
-}
-
-/* Style the button and place it in the middle of the container/image */
-.product__add--btn {
-    display: flex;
-    flex-direction: row;
-    position: absolute;
-    margin: 0;
-    width: 49%;
-    top: 89.5%;
-    font-size: 0.84375rem;
-    font-weight: 400;
-    letter-spacing: 0.042rem;
-    color: var(--Rose__900);
-    padding-block-start: 0.75rem;
-    padding-block-end: 0.65rem;
-    border-radius: 1.35rem;
-    border: 1px solid var(--Rose__500);
-    background-color: var(--Rose__50);
-}
-
-/*.product__add--btn img {
-    padding-inline: clamp(1.4rem, calc(1.382rem + 0.075vw), 1.45rem) 0.5rem;    
-}*/
-
-/*3. definovanie selected produktu */
-/* Keď má celá karta triedu is-selected, obrázok dostane rámček */
-.product__card.is-selected .product__image--container picture img {
-    border: 2px solid var(--Red);
-}
-
-/* Predvolene skryjeme ovládanie množstva */
-.quantity-content {
-    display: none; 
-}
-
-
-/* Keď je tlačidlo AKTÍVNE */
-.product__add--btn.active {
-    background-color: var(--Red);
-    border: none;
-    padding: 0.8rem 0.8rem; /* Rovnomerný padding pre aktívny stav */
-    display: flex;
-    justify-content: center;
-}
-
-/* Skryjeme "Add to Cart" v aktívnom stave */
-.product__add--btn.active .add-content {
-    display: none;
-}
-
-/* Ukážeme "Quantity" v aktívnom stave */
-.product__add--btn.active .quantity-content {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    color: white;
-}
-
-/*Stylovanie ikoniek plus a mínus*/
-.qty-btn {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0; /* Zákaz rozťahovania */
-    border: 1px solid white;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.2s, filter 0.2s;
-    color: var(--Rose__50);
-    /* Vystredenie ikonky vo vnútri krúžku */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.qty-btn:hover {
-    background-color: white;
-    /* Tento filter zmení bielu ikonku na červenú pri hoveri */
-    filter: brightness(0) saturate(100%) invert(26%) sepia(89%) saturate(1556%) hue-rotate(345deg) brightness(91%) contrast(101%);
-}
-
-
-
-/*4. uprava obsahu pre produkty*/
-.product__info {
-    margin-block-start: 2.25rem; 
-}
-
+/* 4. definovanie vzhladu informacii o produkte */
 .product__category {    
     font-size: 0.84375rem;
     font-weight: 400;
@@ -191,47 +83,123 @@ picture img {
     color: var(--Red);
 }
 
+/* 5. definovanie meny pre cenu */
 .product__price::before {
     content: "$";
     color: var(--Red);
 }
 
-/*5. umiestnenie a zadefinovanie prazdneho kosika*/
-.cart__summary {
+/* 6. skryt verziu selected - plu/minus verziu, kym tlacidlo nedostane triedu .active*/
+.quantity-content {
+    display: none;
+}
+
+/* 7. Na umiestnenie tlačidla je potrebný kontajner */
+.product__image--container {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Toto nahradí tvoj padding 105px */
-    text-align: center;
-    border-radius: 0.75rem;
-    margin-top: clamp(0.23rem, calc(2.623rem - 2.659vw), 2rem);
-    padding-inline-start: 1.55rem;
-    padding-block: 0.05rem 2.5rem;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    margin: 0;
+}
+
+/* 8. zadefinovanie responzivneho obrazka */
+.product__image--container picture {
+    width: 100%;
+    height: auto;
+    margin: 0;    
+}
+
+/* 9. definvanie štýlu tlačidla a jeho umiestnenie do kontajnera/obrázka */
+.product__add--btn {
+    /* definovanie polohy a samotneho tlacidla */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    margin: 0;
+    width: 160px;
+    height: 44px;
+    top: 89.5%;
+    /* Vycentrovanie samotného tlačidla na stred obrázka */
+    left: 50%;
+    transform: translateX(-50%);
+    /* definovanie vzhladu tlacidla */
+    outline: 1px solid var(--Rose__500);
+    outline-offset: -1px; /* Posunie linku o 1px DOVNÚTRA tlačidla */
+    border: none;
+    border-radius: 1.35rem;
     background-color: var(--Rose__50);
 }
 
+.add-content {
+    /* definovanie rozlozenia samotneho obsahu tlacidla */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-content .add-cart {
+    /* definovanie vzhladu a umiestnenia obssahu */
+    font-size: 0.95rem;
+    font-weight: 400;
+    font-family: 'Red Hat Text', sans-serif;
+    color: var(--Rose__900);
+    margin: 0;
+    padding-inline-start: 0.4rem; 
+    letter-spacing: -0.028rem;
+}
+
+/* 10. definovanie umiestnenia informacii o produkte */
+.product__info {
+    margin-block-start: 2.25rem; 
+}
+
+/* 11. definovanie kosika, aby sa centroval automaticky */
+.cart__summary {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-radius: 0.75rem;
+    margin-top: clamp(0.23rem, calc(2.623rem - 2.659vw), 2rem);
+    background-color: var(--Rose__50);
+    padding-block: 0.05rem 2.5rem;
+    
+}
+
+/* definovanie pozicii a vzhladu elementov kosika */
 .cart__quantity {
-    align-self: flex-start; /* Nadpis v košíku ostane vľavo */
+    align-self: flex-start;
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--Red);
+    padding-inline-start: 1.55rem;
     margin-bottom: 2.4rem;
 }
 
-.cart__summary img {
-        /* Paddingy 105px sú preč, align-items: center to vyriešil */
-        margin-bottom: 1.1rem;
-        margin-inline-start: -1.5rem;
-    }
-
-.cart__info {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--Rose__500);    
-    letter-spacing: -0.005rem;
-    margin-inline-start: -1.55rem;
+.cart__state--empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
-/*6. uprava footer*/
+.cart__summary img {
+    margin-bottom: 1.1rem;
+}
+
+.cart__info {
+    font-size: 0.87rem;
+    font-weight: 600;
+    color: var(--Rose__500); 
+}
+
+/* 12. definovanie footer */
 .attribution {     
     font-size: 0.6875rem; 
     text-align: center;   
@@ -256,12 +224,6 @@ picture img {
     }
 
     .product__add--btn {
-        width: 64%;
         top: 91%;   
     }
-
-    .cart__summary {
-        position: sticky; /* Košík bude cestovať s tebou pri skrolovaní */
-        top: 2rem;
-    }    
 }
