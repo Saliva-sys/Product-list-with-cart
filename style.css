@@ -8,6 +8,7 @@
     --Rose__500: hsl(12, 20%, 44%);
     --Rose__900: hsl(14, 65%, 9%);
     --Blue: hsl(228, 45%, 44%);
+    --White: hsl(0, 0%, 100%);
 }
 
 * {
@@ -19,7 +20,12 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Red Hat Text', sans-serif;
-    background-color: var(--Rose__100); /* Pridané pozadie z návrhu */
+    background-color: var(--Rose__50);
+}
+
+/* skryt verziu selected - plu/minus verziu, kym tlacidlo nedostane triedu .active*/
+.quantity-content {
+    display: none;
 }
 
 /* DEFINOVANIE EMPTY VERZIE */
@@ -27,7 +33,7 @@ body {
 picture img {
     display: block;
     width: 100%;
-    height: auto; /* Zmenené z 100%, aby sa obrázok nedeformoval */
+    height: auto;
     object-fit: cover;
     border-radius: 0.5rem;
 }
@@ -101,7 +107,7 @@ picture img {
     margin: 0;
 }
 
-/* zadefinovanie responzivneho obrazka */
+/* zadefinovanie responzivneho obrazka aby sa nan dalo umiestnit tlacidlo */
 .product__image--container picture {
     width: 100%;
     height: auto;
@@ -164,9 +170,8 @@ picture img {
     text-align: center;
     border-radius: 0.75rem;
     margin-top: clamp(0.23rem, calc(2.623rem - 2.659vw), 2rem);
-    background-color: var(--Rose__50);
-    padding-block: 0.05rem 2.5rem;
-    
+    background-color: var(--White);
+    padding-block: 0.05rem 2.5rem;    
 }
 
 /* definovanie pozicii a vzhladu elementov kosika */
@@ -176,7 +181,7 @@ picture img {
     font-weight: 700;
     color: var(--Red);
     padding-inline-start: 1.55rem;
-    margin-bottom: 2.4rem;
+    margin-bottom: 2.5rem;
 }
 
 .cart__state--empty {
@@ -187,7 +192,7 @@ picture img {
 }
 
 .cart__summary img {
-    margin-bottom: 1.1rem;
+    margin-bottom: 1rem;
 }
 
 .cart__info {
@@ -196,24 +201,10 @@ picture img {
     color: var(--Rose__500); 
 }
 
-/* skryt verziu selected - plu/minus verziu, kym tlacidlo nedostane triedu .active*/
-.quantity-content {
-    display: none;
-}
-
 /* DEFINOVANIE SELECTED VERZIE */
 /* skryt tlacidlo "Add to cart" */ 
 .product__add--btn.active .add-content {
     display: none;
-}
-
-/* zobrazit mnozstvo a znamienka +/- */
-.product__add--btn.active .quantity-content {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    padding-inline: 0.55rem;
 }
 
 /* zmeneny styl aktivneho tlacidla */
@@ -225,51 +216,65 @@ picture img {
     font-weight: 600;
 }
 
+/* zobrazit mnozstvo a znamienka +/- */
+.product__add--btn.active .quantity-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-inline: 0.55rem;
+}
+
 /* definovanie kruzkov okolo znamienok +/- */
 .qty-btn-container {
+    /* definovanie rozmiestnenia znamienok a mnozstva v tlacidle */
     display: flex;
     align-items: center;   /* Centrovanie ikonky vnútri krúžku vertikálne */
     justify-content: center; /* Centrovanie ikonky vnútri krúžku horizontálne */
-    border: none;
-    outline: 1px solid var(--Rose__50);
-    outline-offset: -1px;
-    padding: 4px; /* Priestor medzi ikonkou a okrajom krúžku */
-    border-radius: 50%;
+
+    /* velkost priestoru pre znamienka +/- */
     width: 18px;
     height: 18px;
+    padding: 4px; /* Priestor medzi ikonkou a okrajom krúžku */
+
+    /* oramovanie znamienok kruzkom */
+    outline: 1px solid var(--Rose__50);
+    border-radius: 50%;
+}
+
+/* nastavenie veľkosti ikoniek +/- */
+.qty-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.qty-btn-container:hover {
     cursor: pointer;
     transition: all 0.2s ease;
+    background-color: var(--Rose__50)
 }
 
-/* Samotná ikonka vnútri */
-.qty-img {
-    width: 10px;
-    height: auto;
+/* zmena znamienka z bieleho na cervene */
+.qty-btn-container:hover img {
+    filter: brightness(0) saturate(100%) invert(31%) sepia(94%) saturate(1294%) hue-rotate(338deg) brightness(86%) contrast(100%);;
 }
 
-/*definovanie oramovania obrazku */
-.product__card.is-selected img {
+.product__card.is-selected picture img {
     outline: 2px solid var(--Red);
     outline-offset: -2px;
     transition: all 0.2s ease;
 }
 
-.qty-btn-container:hover {
-    background-color: var(--Rose__50);
+/* DEFINOVANIE KOSIKA SELECTED VERZIE */
+.card__state--selected {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
-/* Zmena farby ikonky na červenú pri hoveri na krúžok */
-/* Funguje to len ak je ikonka SVG s vlastnosťou currentColor, 
-   alebo ju môžeme invertovať pomocou filtra: */
-.qty-btn-container:hover img {
-    /* Filter pre zmenu BIELEJ na červenú (hsl(14, 86%, 42%)) */
-    filter: brightness(0); /* Ikonka MUSÍ sčernieť */
-}
-
-.product__add--btn.active .qty-btn {
-    outline: 1px solid var(--Rose__50);
-    outline-offset: -1px;
-}
 
 /* DEFINOVANIE FOOTER */
 .attribution {     
