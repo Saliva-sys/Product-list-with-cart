@@ -1,5 +1,6 @@
 :root {
     --Red: hsl(14, 86%, 42%);
+    --Red10: hsl(10, 83%, 30%);
     --Green: hsl(159, 69%, 38%);
     --Rose__50: hsl(20, 50%, 98%);
     --Rose__100: hsl(13, 31%, 94%);
@@ -9,6 +10,7 @@
     --Rose__900: hsl(14, 65%, 9%);
     --Blue: hsl(228, 45%, 44%);
     --White: hsl(0, 0%, 100%);
+    --Black-transparent: hsl(0, 0%, 0%, 50%);
 }
 
 * {
@@ -21,11 +23,6 @@ body {
     padding: 0;
     font-family: 'Red Hat Text', sans-serif;
     background-color: var(--Rose__50);
-}
-
-/* skryt verziu selected - plu/minus verziu, kym tlacidlo nedostane triedu .active*/
-.quantity-content {
-    display: none;
 }
 
 /* DEFINOVANIE EMPTY VERZIE */
@@ -131,10 +128,13 @@ picture img {
     transform: translateX(-50%);
     /* definovanie vzhladu tlacidla */
     outline: 1px solid var(--Rose__500);
-    outline-offset: -1px; /* Posunie linku o 1px DOVNÚTRA tlačidla */
+    outline-offset: -1px; 
     border: none;
     border-radius: 1.35rem;
     background-color: var(--Rose__50);
+
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 .add-content {
@@ -166,8 +166,6 @@ picture img {
 .cart__summary {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
     border-radius: 0.75rem;
     margin-top: clamp(0.23rem, calc(2.623rem - 2.659vw), 2rem);
     background-color: var(--White);
@@ -181,7 +179,8 @@ picture img {
     font-weight: 700;
     color: var(--Red);
     padding-inline-start: 1.55rem;
-    margin-bottom: 2.5rem;
+    padding-block-start: 1.5rem;
+    margin: 0;
 }
 
 .cart__state--empty {
@@ -189,6 +188,7 @@ picture img {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    margin-top: 2.5rem;
 }
 
 .cart__summary img {
@@ -202,18 +202,13 @@ picture img {
 }
 
 /* DEFINOVANIE SELECTED VERZIE */
-/* skryt tlacidlo "Add to cart" */ 
-.product__add--btn.active .add-content {
-    display: none;
-}
-
 /* zmeneny styl aktivneho tlacidla */
 .product__add--btn.active {
     background-color: var(--Red);
     color: var(--Rose__50);
     font-family: 'Red Hat Text', sans-serif;
     font-size: 0.85rem;
-    font-weight: 600;
+    font-weight: 600;    
 }
 
 /* zobrazit mnozstvo a znamienka +/- */
@@ -236,11 +231,13 @@ picture img {
     /* velkost priestoru pre znamienka +/- */
     width: 18px;
     height: 18px;
-    padding: 4px; /* Priestor medzi ikonkou a okrajom krúžku */
+    padding: 0.25rem; /* Priestor medzi ikonkou a okrajom krúžku */
 
     /* oramovanie znamienok kruzkom */
-    outline: 1px solid var(--Rose__50);
-    border-radius: 50%;
+    outline: 1px solid var(--Rose__100);
+    outline-offset: -1px;
+    border: none;
+    border-radius: 50%;    
 }
 
 /* nastavenie veľkosti ikoniek +/- */
@@ -268,13 +265,392 @@ picture img {
 }
 
 /* DEFINOVANIE KOSIKA SELECTED VERZIE */
-.card__state--selected {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+/* vzhlad nazvu polozky v kosiku */
+.cart__item-name {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: -0.02rem;
+    color: var(--Rose__900);
+    padding-block-end: 0.55rem;
 }
 
+/* nastavenie vzhladu mnozstva */
+.cart__item-count {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--Red);
+}
+
+/* nastavenie vzhladu jednotkovej ceny */
+.cart__item-price {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--Rose__500);
+}
+
+/* nastavenie vzhladu ceny celkom */
+.cart__item-subtotal {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--Rose__500);
+}
+
+/* nastavenie vzhladu tlacidla na odstranenie */
+.cart__item-remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* velkost priestoru pre znamienka +/- */
+    width: 1.1rem;
+    height: 1.1rem;
+    padding: 0.3rem; /* Priestor medzi ikonkou a okrajom krúžku */
+    /* oramovanie znamienok kruzkom */
+    outline: 2px solid var(--Rose__300);
+    outline-offset: -2px;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+}
+
+.cart__item-remove img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    margin: 0;
+}
+
+/* nastavenie aktivneho tladidla remove */
+.cart__item-remove:hover {
+    outline: 2px solid var(--Rose__900);
+    outline-offset: -2px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cart__item-remove:hover img {
+    filter: brightness(0); /* Zmení ikonku na čiernu pri hoveri */
+}
+
+/* nastavenie rozlozenia kosika */
+.cart__state--selected {
+    margin: 0;
+    padding-block-start: 1.45rem;
+    padding-inline-end: 1.5rem;
+    padding-inline-start: 1.5rem;
+}
+
+/* nastavenie rozlozenia poloziek v kosiku */
+.cart__item {
+    display: grid;
+    grid-template-columns: 1fr 19px;
+    align-items: center;
+    justify-content: center;
+    margin: 0; 
+}
+
+/* nastavenie rozmiestnenia meta informacii (mnozstvo, jednotkova cena, cena celkom) */
+.cart__item-meta {
+    display: grid;
+    grid-template-columns: clamp(1.859rem, calc(1.854rem + 0.023vw), 1.875rem) clamp(3.625rem, calc(3.603rem + 0.094vw), 3.688rem) auto;
+}
+
+/* nastavenie deliacej ciary */
+.separator {
+    display: block;      /* Zabezpečí, že sa prvok vykreslí */
+    height: 0.0625rem;
+    background-color: var(--Rose__100);
+    border: none;
+    width: 100%;
+    margin-block: clamp(1rem, calc(1.068rem - 0.075vw), 1.08rem) clamp(0.975rem, calc(0.972rem + 0.015vw), 0.985rem);
+}
+
+.separator-second {
+    display: block;      /* Zabezpečí, že sa prvok vykreslí */
+    height: 0.0625rem;
+    background-color: var(--Rose__100);
+    border: none;
+    width: 100%;
+    margin-block-start: 1.6rem;
+}
+
+/* nastavenie rozlozenia sumarnej ceny/zhrnutia objednavky kosika */
+.cart__total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block-start: 1.5rem;
+    padding-block-end: 1.5rem;
+    margin: 0;
+}
+
+/* nastavenie vzhladu "Order Total" */
+.cart__total span {
+    font-size: 0.87rem;
+    font-weight: 400;
+}
+
+/* nastavenie vzhladu celkovej ceny */
+.cart__total-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--Rose__900);
+    letter-spacing: 0.02rem;
+}
+
+/* nastavenie "delivery" informacie */
+.cart__delivery-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--Rose__50);
+    border-radius: 0.5rem;
+    margin: 0;
+    padding-block: 1rem 1rem;
+    gap: 0.45rem;
+}
+
+.cart__delivery-info p {
+    margin: 0;
+    font-family: 'Red Hat Text', sans-serif;
+    font-size: 0.899rem;
+    font-weight: 400;
+    color: var(--Rose__900);
+    letter-spacing: -0.01rem;
+}
+
+.cart__delivery-info span {
+    font-weight: 600;
+}
+
+.cart__delivery-info img {
+    margin: 0;
+    object-fit: contain;
+    width: 1.3rem;
+}
+
+/* nastavenie tlacidla "Confirm Order" */
+.cart__btn-confirm {
+    width: 100%;
+    border: none;
+    border-radius: 2rem;
+    margin-block-start: 1.5rem;
+    padding-block: 1rem;
+    background-color: var(--Red);
+
+    /*nastavenie textu tlacidla */
+    font-family: 'Red Hat Text', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--Rose__50);
+}
+
+/*nastavenie aktivneho tlacidla "Confirm Order" */
+.cart__btn-confirm:hover {
+    background-color: var(--Red10);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* NASTAVENIE POTVRDENIA OBJEDNAVKY */
+/* nastavenie kontajnera */
+.order-modal {
+    display: flex;
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--Black-transparent);
+    justify-content: center;
+    overflow-y: initial; /* Modal ako taký sa neskroluje */
+    padding-block-start: 5.95rem;
+}
+
+/* Biely box s obsahom */
+.order-modal__content {
+    background-color: var(--White);
+    width: 100%;
+    max-width: 37rem;
+    border-radius: 0.8rem 0.8rem 0 0; /* Zaoblené rohy len hore na mobile */
+    padding-block-start: 2.5rem;
+    padding-inline: 1.5rem;   
+
+    /* Kľúčové vlastnosti pre scroll: */
+    height: 100%;
+    max-height: 45rem;
+    overflow-y: auto; /* Ak je zoznam dlhý, bude sa skrolovať len vnútro */    
+}
+
+/*nastavenie vzhladu "Order Confirmed" */
+.order-modal__title {
+    font-size: 2.5rem;
+    color: var(--Rose__900);
+    margin-block: 1.15rem clamp(0.5rem, calc(0.482rem + 0.075vw), 0.55rem);
+    line-height: 1.2;
+}
+
+/* nastavenie vzladu pre subtitle */
+.order-modal__subtitle {
+    color: var(--Rose__500);
+    margin: 0;
+    padding-block-end: 2.05rem;
+}
+
+/* nastavenie kontajnera pre zoznam objednanych produktov */
+.order-modal__summary {
+    background-color: var(--Rose__50);
+    border-radius: 0.5rem;
+    padding-inline-start: 1.5rem;
+    padding-inline-end: 1.535rem;
+    padding-block-start: 1.5rem;
+}
+
+/* nastavenie obrazka */
+.order-modal__item img {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.25rem;
+    object-fit: cover;
+    align-self: center;
+}
+
+/* nastavenie poloziek */
+.order-modal__item {
+    display: grid;
+    grid-template-columns: 2rem clamp(11.5rem, calc(10.268rem + 5.258vw), 15rem) auto;    
+}
+
+/* nastavenie nazvu produktu */
+.order-modal__item-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--Rose__900);
+    letter-spacing: -0.005rem;
+    margin: 0;
+    padding-inline-start: 1.975rem;
+    padding-block-start: 0.05rem;
+
+    /* Skrátenie dlhého textu bodkami ak by nevyšiel */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* nastavenie vzhladu a zarovnania celkovej ceny za produkt */
+.order-modal__item-subtotal {
+    justify-self: end; 
+    align-self: center;
+    font-family: 'Red Hat Text', sans-serif;
+    font-weight: 600;
+    font-size: 1.0rem;
+    color: var(--Rose__900);
+}
+
+.order-modal__item-info .cart__item-meta {
+    padding-inline-start: 1.975rem;
+    padding-block-start: 0.55rem;
+}
+
+/* nastavenie deliacej ciary */
+.order-modal__separator {
+    display: block;      /* Zabezpečí, že sa prvok vykreslí */
+    height: 0.0625rem;
+    background-color: var(--Rose__100);
+    border: none;
+    width: 100%;
+    margin-block-start: 0.95rem;
+    margin-block-end: 1.05rem;
+}
+
+.order-modal__separator-second {
+    display: block;      /* Zabezpečí, že sa prvok vykreslí */
+    height: 0.0625rem;
+    background-color: var(--Rose__100);
+    border: none;
+    width: 100%;
+    margin-block-start: 1.5rem;
+}
+
+/* Celková suma v modale */
+.order-modal__total-container {
+    display: grid;
+    grid-template-columns: clamp(11.25rem, calc(7.183rem + 17.352vw), 22.8rem) auto;
+    column-gap: 1rem;
+    align-items: center;
+    margin: 0;
+    padding-block-start: 1.525rem;
+    padding-block-end: 1.5rem;
+}
+
+.order-modal__total-container span {
+    font-size: 0.87rem;
+    font-weight: 400;
+}
+
+.order-modal__total-price {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--Rose__900);
+    letter-spacing: 0.02rem;
+    margin: 0;
+}
+
+/* nastavenie tlacidla "Start New Order" */
+.order-modal__btn-new {
+    width: 100%;
+    border: none;
+    border-radius: 2rem;
+    margin-block-start: 2rem;
+    padding-block: 1rem;
+    background-color: var(--Red);
+
+    /*nastavenie textu tlacidla */
+    font-family: 'Red Hat Text', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--Rose__50);
+}
+
+/*nastavenie aktivneho tlacidla "Start New Order" */
+.order-modal__btn-new:hover {
+    background-color: var(--Red10);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* VYPNUTIE JEDNOTLIVYCH VERZII */
+/* skryt verziu selected - plu/minus verziu, kym tlacidlo nedostane triedu .active*/
+.quantity-content {
+    display: none;
+}
+
+/* skryt tlacidlo "Add to cart" */ 
+.product__add--btn.active .add-content {
+    display: none;
+}
+
+/* skryt prazdny kosik */
+.cart__state--empty {
+    display: none;
+}
+
+/* Skrytie separatora vnútri posledného produktu v zozname verzie .selected*/
+.cart__items-container .cart__item:last-child .separator {
+    display: none;
+}
+
+/* vypnutie verzie .confirmed */
+.order-modal {
+    display: none;
+}
+
+/* Skrytie separatora vnútri posledného produktu v zozname verzie .confirmed*/
+.order-modal__summary .order-modal__item:last-of-type .order-modal__separator {
+    display: none;
+}
 
 /* DEFINOVANIE FOOTER */
 .attribution {     
@@ -303,4 +679,18 @@ picture img {
     .product__add--btn {
         top: 91%;   
     }
+
+    .order-modal {
+        padding-block-start: 21.1rem;        
+    }
+
+    .order-modal__content {
+        border-radius: 0.8rem; 
+        padding-inline: 2.5rem;  
+        height: 100%;
+        max-height: 42.9rem;
+    }
+
+
+
 }
