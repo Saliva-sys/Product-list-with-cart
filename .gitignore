@@ -17,3 +17,6 @@
 
 # Môj pomocný súbor so štýlmi, ktorý nechcem na GitHub
 style1.css
+
+# Ignorovať statickú predlohu
+index_static.html
