@@ -47,10 +47,10 @@ picture img {
     display: grid;
     grid-template-columns: 1fr;
     width: 100%;
-    max-width: clamp(37.5rem, calc(22.887rem + 62.347vw), 79rem); /* Zvýšené z 350px, aby to na mobile nepôsobilo utopene */
+    max-width: clamp(37.5rem, calc(22.887rem + 62.347vw), 79rem); 
     margin: 0 auto;
     padding-block-start: clamp(1.281rem, calc(-0.134rem + 6.038vw), 5.3rem);
-    padding-inline: 24px;
+    padding-inline: 1.5rem;
 }
 
 /* definovanie rozlozenia produktov */
@@ -120,8 +120,8 @@ picture img {
     justify-content: center;
     position: absolute;
     margin: 0;
-    width: 160px;
-    height: 44px;
+    width: 10rem;
+    height: 2.75rem;
     top: 89.5%;
     /* Vycentrovanie samotného tlačidla na stred obrázka */
     left: 50%;
@@ -230,8 +230,8 @@ picture img {
     justify-content: center; /* Centrovanie ikonky vnútri krúžku horizontálne */
 
     /* velkost priestoru pre znamienka +/- */
-    width: 18px;
-    height: 18px;
+    width: 1.125rem;
+    height: 1.125rem;
     padding: 0.25rem; /* Priestor medzi ikonkou a okrajom krúžku */
 
     /* oramovanie znamienok kruzkom */
@@ -278,7 +278,7 @@ picture img {
 /* nastavenie rozlozenia poloziek v kosiku */
 .cart__item {
     display: grid;
-    grid-template-columns: 1fr 19px;
+    grid-template-columns: 1fr 1.188rem;
     align-items: center;
     justify-content: center;
     margin: 0; 
@@ -561,7 +561,7 @@ picture img {
 
 /* nastavenie deliacej ciary */
 .order-modal__separator {
-    display: block;      /* Zabezpečí, že sa prvok vykreslí */
+    grid-column: 1 / -1;
     height: 0.0625rem;
     background-color: var(--Rose__100);
     border: none;
@@ -657,30 +657,13 @@ picture img {
     display: none;
 }
 
-/* skryt tlacidlo "Add to cart" */ 
-.product__add--btn.active .add-content {
-    display: none;
-}
-
-/* Skrytie separatora vnútri posledného produktu v zozname verzie .selected*/
-.cart__items-container .cart__item:last-child .separator {
-    display: none;
-}
-
-/* Skrytie separatora vnútri posledného produktu v zozname verzie .confirmed*/
-.order-modal__summary .order-modal__item:last-of-type .order-modal__separator {
-    display: none;
-}
-
-.cart__total {
-    display: none;
-}
-
-.cart__delivery-info {
-    display: none;
-}
-
-.cart__btn-confirm {
+.product__add--btn.active .add-content, /* skryt tlacidlo "Add to cart" */
+.cart__items-container .cart__item:last-child .separator, /* Skrytie separatora vnútri posledného produktu v zozname verzie .selected*/
+.order-modal__summary .order-modal__item:last-of-type .order-modal__separator, /* Skrytie separatora vnútri posledného produktu v zozname verzie .confirmed*/
+.cart__total, 
+.cart__delivery-info, 
+.cart__btn-confirm, 
+.separator-second {
     display: none;
 }
 
@@ -698,7 +681,7 @@ picture img {
 /* DESKTOP VERZIA */
 @media (min-width: 64rem) {
     .card {
-        grid-template-columns: 1fr 385px;
+        grid-template-columns: 1fr 24.063rem;
         align-items: flex-start;
         gap: 2rem;
     }

@@ -44,7 +44,7 @@ fetch('./data.json')
           <div class="product__info">
             <span class="product__category">${product.category}</span>
             <h2 class="product__name">${product.name}</h2>          
-            <span class="product__price">${product.price}</span>
+            <span class="product__price">${product.price.toFixed(2)}</span>
           </div>
           
         </article>
@@ -112,6 +112,7 @@ function renderCart() {
     const cartTotal = document.querySelector('.cart__total');
     const cartDelivery = document.querySelector('.cart__delivery-info');
     const cartBtnConfirm = document.querySelector('.cart__btn-confirm');
+    const separatorSecond = document.querySelector('.separator-second');
 
     if (cart.length > 0) {
         // Ak niečo v košíku je
@@ -121,6 +122,7 @@ function renderCart() {
         if (cartTotal) cartTotal.style.display = 'flex';
         if (cartDelivery) cartDelivery.style.display = 'flex';
         if (cartBtnConfirm) cartBtnConfirm.style.display = 'block';
+        if (separatorSecond) separatorSecond.style.display = 'block'; // Zapnúť
 
         cartItemsContainer.innerHTML = ''; // vycistenie stareho zoznam
         let totalAmount = 0;
@@ -161,6 +163,7 @@ function renderCart() {
         if (cartTotal) cartTotal.style.display = 'none';
         if (cartDelivery) cartDelivery.style.display = 'none';
         if (cartBtnConfirm) cartBtnConfirm.style.display = 'none';
+        if (separatorSecond) separatorSecond.style.display = 'none'; // Vypnúť
     }
 }
 
@@ -252,6 +255,9 @@ if (confirmBtn) {
 
         // 4. zobrazenie modal 
         orderModal.style.display = 'flex';
+
+        // 2. POSUNIE STRÁNKU NA ZAČIATOK (to je to, čo hľadáš)
+        window.scrollTo(0, 0);
         
         // zablokovanie scrollovania pozadia, kým je modal otvorený
         document.body.style.overflow = 'hidden';
@@ -278,7 +284,6 @@ if (startNewOrderBtn) {
         });
 
         // 4. vyprazdnenie kosika
-        
         renderCart();
     });
 }
