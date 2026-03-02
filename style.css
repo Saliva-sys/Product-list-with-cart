@@ -1,16 +1,23 @@
 :root {
-    --Red: hsl(14, 86%, 42%);
-    --Red10: hsl(10, 83%, 30%);
-    --Green: hsl(159, 69%, 38%);
-    --Rose__50: hsl(20, 50%, 98%);
-    --Rose__100: hsl(13, 31%, 94%);
-    --Rose__300: hsl(14, 25%, 72%);
-    --Rose__400: hsl(7, 20%, 60%);
-    --Rose__500: hsl(12, 20%, 44%);
-    --Rose__900: hsl(14, 65%, 9%);
-    --Blue: hsl(228, 45%, 44%);
-    --White: hsl(0, 0%, 100%);
-    --Black-transparent: hsl(0, 0%, 0%, 50%);
+    --clr-red: hsl(14, 86%, 42%);
+    --clr-red-dark: hsl(10, 83%, 30%);
+    --clr-green: hsl(159, 69%, 38%);
+    
+    --clr-rose-50: hsl(20, 50%, 98%);
+    --clr-rose-100: hsl(13, 31%, 94%);
+    --clr-rose-300: hsl(14, 25%, 72%);
+    --clr-rose-400: hsl(7, 20%, 60%);
+    
+    --clr-rose-500: hsl(12, 20%, 44%);
+    --clr-rose-900: hsl(14, 65%, 9%);
+    --clr-blue: hsl(228, 45%, 44%);
+    --clr-white: hsl(0, 0%, 100%);
+    --clr-black-alpha: hsl(0, 0%, 0%, 50%);
+}
+
+button, 
+button * {
+    font-family: inherit;
 }
 
 * {
@@ -22,10 +29,21 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Red Hat Text', sans-serif;
-    background-color: var(--Rose__50);
+    background-color: var(--clr-rose-50);
 }
 
-/* DEFINOVANIE EMPTY VERZIE */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* definovanie obrazkov a hlavneho nadpisu*/
 picture img {
     display: block;
@@ -33,13 +51,6 @@ picture img {
     height: auto;
     object-fit: cover;
     border-radius: 0.5rem;
-}
-
-.card__title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin: 0;
-    color: var(--Rose__900);
 }
 
 /* definovanie hlavneho kontajnera */
@@ -53,47 +64,23 @@ picture img {
     padding-inline: 1.5rem;
 }
 
+.card__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--clr-rose-900);
+}
+
 /* definovanie rozlozenia produktov */
 .card__deserts {
     display: grid;
     grid-template-columns: 1fr;
     margin: 0;
-    row-gap: clamp(1.5rem, calc(1.313rem + 0.796vw), 2.03rem);
+    gap: clamp(1.49rem, calc(1.3rem + 0.811vw), 2.03rem) clamp(0rem, calc(-0.528rem + 2.254vw), 1.5rem);
     padding-block-start: 1.9rem;
 }
 
-/* definovanie vzhladu informacii o produkte */
-.product__category {    
-    font-size: 0.84375rem;
-    font-weight: 400;
-    letter-spacing: 0.015rem;
-    color: var(--Rose__500);
-}
-
-.product__name {
-    margin: 0;
-    font-size: 1rem;
-    padding-block-start: 0.25rem;
-    padding-block-end: 0.25rem;
-    font-weight: 600;
-    color: var(--Rose__900);
-    letter-spacing: -0.005rem;
-}
-
-.product__price {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--Red);
-}
-
-/* definovanie meny pre cenu */
-.product__price::before {
-    content: "$";
-    color: var(--Red);
-}
-
-/* Na umiestnenie tlačidla je potrebný kontajner */
+/* kontajner na umiestnenie tlačidla */
 .product__image--container {
     display: flex;
     flex-direction: column;
@@ -111,6 +98,13 @@ picture img {
     margin: 0;    
 }
 
+/* zmena vzhladu oramovanie obrazka verzie .selected */
+.product__card.is-selected picture img {
+    outline: 2px solid var(--clr-red);
+    outline-offset: -2px;
+    transition: all 0.2s ease;    
+}
+
 /* definovanie štýlu tlačidla a jeho umiestnenie do kontajnera/obrázka */
 .product__add--btn {
     /* definovanie polohy a samotneho tlacidla */
@@ -120,94 +114,28 @@ picture img {
     justify-content: center;
     position: absolute;
     margin: 0;
-    width: 10rem;
-    height: 2.75rem;
+    min-width: 10rem; /* Zachová minimálnu veľkosť, ktorú chceš */
+    width: fit-content; /* Prispôsobí sa obsahu */
+    padding-inline: 1.5rem; /* Pridá priestor po bokoch */
+    height: 2.8rem;
+    height: 2.8rem;
     top: 89.5%;
-    /* Vycentrovanie samotného tlačidla na stred obrázka */
-    left: 50%;
-    transform: translateX(-50%);
+
     /* definovanie vzhladu tlacidla */
-    outline: 1px solid var(--Rose__500);
-    outline-offset: -1px; 
-    border: none;
     border-radius: 1.35rem;
-    background-color: var(--Rose__50);
+    border: none;
+    outline: 1px solid var(--clr-rose-500);
+    outline-offset: -1px; 
 
+    background-color: var(--clr-rose-50);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s, transform 0.2s, outline 0.2s;
 }
 
-.add-content {
-    /* definovanie rozlozenia samotneho obsahu tlacidla */
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-}
-
-.add-content .add-cart {
-    /* definovanie vzhladu a umiestnenia obsahu */
-    font-size: 0.925rem;
-    font-weight: 600;
-    font-family: 'Red Hat Text', sans-serif;
-    color: var(--Rose__900);
-    margin: 0;
-    padding-inline-start: 0.4rem; 
-    letter-spacing: -0.028rem;
-}
-
-/* definovanie umiestnenia informacii o produkte */
-.product__info {
-    margin-block-start: 2.25rem; 
-}
-
-/* DEFINOVANIE KOSIKA */
-/* definovanie kosika, aby sa centroval automaticky */
-.cart__summary {
-    display: flex;
-    flex-direction: column;
-    border-radius: 0.75rem;
-    margin-top: clamp(0.23rem, calc(2.623rem - 2.659vw), 2rem);
-    background-color: var(--White);
-    padding-block: 0.05rem 2.5rem;    
-}
-
-/* definovanie pozicii a vzhladu elementov kosika */
-.cart__quantity {
-    align-self: flex-start;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--Red);
-    padding-inline-start: 1.55rem;
-    padding-block-start: 1.5rem;
-    margin: 0;
-}
-
-.cart__state--empty {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin-top: 2.5rem;
-}
-
-.cart__summary img {
-    margin-bottom: 1rem;
-}
-
-.cart__info {
-    font-size: 0.87rem;
-    font-weight: 600;
-    color: var(--Rose__500); 
-}
-
-
-/* DEFINOVANIE SELECTED VERZIE */
 /* zmeneny styl aktivneho tlacidla */
 .product__add--btn.active {
-    background-color: var(--Red);
-    color: var(--Rose__50);
-    font-family: 'Red Hat Text', sans-serif;
+    background-color: var(--clr-red);
+    color: var(--clr-rose-50);
     font-size: 0.85rem;
     font-weight: 600;    
 }
@@ -222,57 +150,114 @@ picture img {
     padding-inline: 0.55rem;
 }
 
-/* definovanie kruzkov okolo znamienok +/- */
-.qty-btn-container {
-    /* definovanie rozmiestnenia znamienok a mnozstva v tlacidle */
+.product__add--btn.active .add-content {
+    display: none;
+}
+
+.add-content {
+    /* definovanie rozlozenia samotneho obsahu tlacidla */
     display: flex;
-    align-items: center;   /* Centrovanie ikonky vnútri krúžku vertikálne */
-    justify-content: center; /* Centrovanie ikonky vnútri krúžku horizontálne */
-
-    /* velkost priestoru pre znamienka +/- */
-    width: 1.125rem;
-    height: 1.125rem;
-    padding: 0.25rem; /* Priestor medzi ikonkou a okrajom krúžku */
-
-    /* oramovanie znamienok kruzkom */
-    outline: 1px solid var(--Rose__100);
-    outline-offset: -1px;
-    border: none;
-    border-radius: 50%;    
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
 }
 
-/* nastavenie veľkosti ikoniek +/- */
-.qty-img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;    
+.add-content .add-cart {
+    /* definovanie vzhladu a umiestnenia obsahu */
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--clr-rose-900);
+    margin: 0;
+    padding-inline-start: 0.4rem; 
+    letter-spacing: -0.028rem;
 }
 
-.qty-btn-container:hover {
-    cursor: pointer;
-    transition: all 0.2s ease;
-    background-color: var(--Rose__50)
+/* definovanie umiestnenia informacii o produkte */
+.product__info {
+    margin-block-start: clamp(2.3rem, calc(2.265rem + 0.15vw), 2.4rem); 
 }
 
-/* zmena znamienka z bieleho na cervene */
-.qty-btn-container:hover img {
-    filter: brightness(0) saturate(100%) invert(31%) sepia(94%) saturate(1294%) hue-rotate(338deg) brightness(86%) contrast(100%);;
+/* definovanie vzhladu informacii o produkte */
+.product__category {    
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.015rem;
+    color: var(--clr-rose-500);
+    margin: 0;
 }
 
-/* zmena vzhladu oramovanie obrazka verzie .selected */
-.product__card.is-selected picture img {
-    outline: 2px solid var(--Red);
-    outline-offset: -2px;
-    transition: all 0.2s ease;    
+.product__name {
+    margin: 0;
+    font-size: 1rem;
+    padding-block: clamp(0.3rem, calc(0.435rem - 0.15vw), 0.4rem) 0.25rem;
+    font-weight: 600;
+    color: var(--clr-rose-900);
+    letter-spacing: -0.005rem;
 }
 
-/* DEFINOVANIE KOSIKA SELECTED VERZIE */
+.product__price {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--clr-red);
+}
+
+/* definovanie meny pre cenu */
+.product__price::before {
+    content: "$";
+    color: var(--clr-red);
+}
+
+/* definovanie kosika, aby sa centroval automaticky */
+.cart__summary {
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.75rem;
+    margin-block-start: clamp(0.23rem, calc(2.623rem - 2.659vw), 2rem);
+    background-color: var(--clr-white);
+    padding-block: 0.05rem 2.5rem;    
+}
+
+.cart__summary img {
+    margin-block-end: 1rem;
+}
+
+/* definovanie pozicii a vzhladu elementov kosika */
+.cart__quantity {
+    align-self: flex-start;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--clr-red);
+    padding-inline-start: 1.55rem;
+    padding-block-start: 1.5rem;
+    margin: 0;
+}
+
+.cart__state--empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-block-start: 2.5rem;
+}
+
+.cart__info {
+    font-size: 0.87rem;
+    font-weight: 600;
+    color: var(--clr-rose-500); 
+}
+
 /* nastavenie rozlozenia kosika */
 .cart__state--selected {
     margin: 0;
     padding-block-start: 1.45rem;
     padding-inline-end: 1.5rem;
     padding-inline-start: 1.5rem;
+}
+
+.cart__item:last-child .separator /* Skrytie separatora vnútri posledného produktu v zozname verzie .selected*/ {
+    display: none;
 }
 
 /* nastavenie rozlozenia poloziek v kosiku */
@@ -284,60 +269,41 @@ picture img {
     margin: 0; 
 }
 
-/* nastavenie rozmiestnenia meta informacii (mnozstvo, jednotkova cena, cena celkom) */
-.cart__item-meta {
-    display: grid;
-    grid-template-columns: clamp(1.859rem, calc(1.854rem + 0.023vw), 1.875rem) clamp(3.625rem, calc(3.603rem + 0.094vw), 3.688rem) auto;
-}
-
-/* nastavenie deliacej ciary */
-.separator {
-    display: block;      /* Zabezpečí, že sa prvok vykreslí */
-    height: 0.0625rem;
-    background-color: var(--Rose__100);
-    border: none;
-    width: 100%;
-    margin-block: clamp(1rem, calc(1.068rem - 0.075vw), 1.08rem) clamp(0.975rem, calc(0.972rem + 0.015vw), 0.985rem);
-}
-
-.separator-second {
-    display: block;      /* Zabezpečí, že sa prvok vykreslí */
-    height: 0.0625rem;
-    background-color: var(--Rose__100);
-    border: none;
-    width: 100%;
-    margin-block-start: 1.6rem;
-}
-
 /* vzhlad nazvu polozky v kosiku */
 .cart__item-name {
     margin: 0;
     font-size: 0.9rem;
     font-weight: 600;
     letter-spacing: -0.02rem;
-    color: var(--Rose__900);
+    color: var(--clr-rose-900);
     padding-block-end: 0.55rem;
+}
+
+/* nastavenie rozmiestnenia meta informacii (mnozstvo, jednotkova cena, cena celkom) */
+.cart__item-meta {
+    display: grid;
+    grid-template-columns: clamp(1.859rem, calc(1.854rem + 0.023vw), 1.875rem) clamp(3.625rem, calc(3.603rem + 0.094vw), 3.688rem) auto;
 }
 
 /* nastavenie vzhladu mnozstva */
 .cart__item-count {
     font-size: 0.85rem;
     font-weight: 600;
-    color: var(--Red);
+    color: var(--clr-red);
 }
 
 /* nastavenie vzhladu jednotkovej ceny */
 .cart__item-price {
     font-size: 0.85rem;
     font-weight: 400;
-    color: var(--Rose__500);
+    color: var(--clr-rose-500);
 }
 
 /* nastavenie vzhladu ceny celkom */
 .cart__item-subtotal {
     font-size: 0.85rem;
     font-weight: 600;
-    color: var(--Rose__500);
+    color: var(--clr-rose-500);
 }
 
 /* nastavenie vzhladu tlacidla na odstranenie */
@@ -350,7 +316,7 @@ picture img {
     height: 1.1rem;
     padding: 0.3rem; /* Priestor medzi ikonkou a okrajom krúžku */
     /* oramovanie znamienok kruzkom */
-    outline: 2px solid var(--Rose__300);
+    outline: 2px solid var(--clr-rose-300);
     outline-offset: -2px;
     border: none;
     border-radius: 50%;
@@ -366,7 +332,7 @@ picture img {
 
 /* nastavenie aktivneho tladidla remove */
 .cart__item-remove:hover {
-    outline: 2px solid var(--Rose__900);
+    outline: 2px solid var(--clr-rose-900);
     outline-offset: -2px;
     border: none;
     cursor: pointer;
@@ -377,9 +343,70 @@ picture img {
     filter: brightness(0); /* Zmení ikonku na čiernu pri hoveri */
 }
 
+/* nastavenie deliacej ciary */
+.separator {
+    display: block;      /* Zabezpečí, že sa prvok vykreslí */
+    height: 0.0625rem;
+    background-color: var(--clr-rose-100);
+    border: none;
+    width: 100%;
+    margin-block: clamp(1rem, calc(1.068rem - 0.075vw), 1.08rem) clamp(0.975rem, calc(0.972rem + 0.015vw), 0.985rem);
+}
+
+/* skryt verziu selected - plu/minus verziu, kym tlacidlo nedostane triedu .active*/
+.quantity-content {
+    display: none;
+}
+
+/* definovanie kruzkov okolo znamienok +/- */
+.qty-btn-container {
+    /* definovanie rozmiestnenia znamienok a mnozstva v tlacidle */
+    display: flex;
+    align-items: center;   /* Centrovanie ikonky vnútri krúžku vertikálne */
+    justify-content: center; /* Centrovanie ikonky vnútri krúžku horizontálne */
+
+    /* velkost priestoru pre znamienka +/- */
+    width: 1.125rem;
+    height: 1.125rem;
+    padding: 0.25rem; /* Priestor medzi ikonkou a okrajom krúžku */
+
+    /* oramovanie znamienok kruzkom */
+    outline: 1px solid var(--clr-rose-100);
+    outline-offset: -1px;
+    border: none;
+    border-radius: 50%;    
+}
+
+.qty-btn-container:hover {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: var(--clr-rose-50)
+}
+
+/* zmena znamienka z bieleho na cervene */
+.qty-btn-container:hover img {
+    filter: brightness(0) saturate(100%) invert(31%) sepia(94%) saturate(1294%) hue-rotate(338deg) brightness(86%) contrast(100%);;
+}
+
+/* nastavenie veľkosti ikoniek +/- */
+.qty-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;    
+}
+
+.separator-second {
+    display: block;      /* Zabezpečí, že sa prvok vykreslí */
+    height: 0.0625rem;
+    background-color: var(--clr-rose-100);
+    border: none;
+    width: 100%;
+    margin-block-start: 1.6rem;
+}
+
 /* nastavenie rozlozenia sumarnej ceny/zhrnutia objednavky kosika */
 .cart__total {
-    display: flex;
+    display: none;
     justify-content: space-between;
     align-items: center;
     padding-block-start: 1.5rem;
@@ -389,7 +416,6 @@ picture img {
 
 /* nastavenie vzhladu "Order Total" */
 .cart__total span {
-    font-family: 'Red Hat Text', sans-serif;
     font-size: 0.87rem;
     font-weight: 400;
 }
@@ -398,39 +424,38 @@ picture img {
 .cart__total-price {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--Rose__900);
+    color: var(--clr-rose-900);
     letter-spacing: 0.02rem;
 }
 
 /* nastavenie "delivery" informacie */
 .cart__delivery-info {
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
-    background-color: var(--Rose__50);
+    background-color: var(--clr-rose-50);
     border-radius: 0.5rem;
     margin: 0;
     padding-block: 1rem 1rem;
     gap: 0.45rem;
 }
 
+.cart__delivery-info img {
+    margin: 0;
+    object-fit: contain;
+    width: 1.3rem;
+}
+
 .cart__delivery-info p {
     margin: 0;
-    font-family: 'Red Hat Text', sans-serif;
     font-size: 0.899rem;
     font-weight: 400;
-    color: var(--Rose__900);
+    color: var(--clr-rose-900);
     letter-spacing: -0.01rem;
 }
 
 .cart__delivery-info span {
     font-weight: 600;
-}
-
-.cart__delivery-info img {
-    margin: 0;
-    object-fit: contain;
-    width: 1.3rem;
 }
 
 /* nastavenie tlacidla "Confirm Order" */
@@ -440,75 +465,84 @@ picture img {
     border-radius: 2rem;
     margin-block-start: 1.5rem;
     padding-block: 1rem;
-    background-color: var(--Red);
+    background-color: var(--clr-red);
 
     /*nastavenie textu tlacidla */
-    font-family: 'Red Hat Text', sans-serif;
     font-size: 1rem;
     font-weight: 600;
-    color: var(--Rose__50);
+    color: var(--clr-rose-50);
 }
 
 /*nastavenie aktivneho tlacidla "Confirm Order" */
 .cart__btn-confirm:hover {
-    background-color: var(--Red10);
+    background-color: var(--clr-red-dark);
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
-/* NASTAVENIE POTVRDENIA OBJEDNAVKY */
-/* nastavenie kontajnera */
+/* nastavenie kontajnera pre potvrdenie objednavky*/
 .order-modal {
-    display: flex;
+    display: none;
     z-index: 1000;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--Black-transparent);
+    background-color: var(--clr-black-alpha);
     justify-content: center;
-    overflow-y: initial; /* Modal ako taký sa neskroluje */
-    padding-block-start: 5.95rem;
+    align-items: flex-start; /* Dôležité pre scroll odvrchu */
+    overflow-y: auto;        /* Povolený scroll celého modalu */
+    padding-block-start: clamp(5.95rem, calc(0.616rem + 22.761vw), 21.1rem);
 }
 
 /* Biely box s obsahom */
 .order-modal__content {
-    background-color: var(--White);
+    background-color: var(--clr-white);
     width: 100%;
     max-width: 37rem;
     border-radius: 0.8rem 0.8rem 0 0; /* Zaoblené rohy len hore na mobile */
     padding-block-start: 2.5rem;
-    padding-inline: 1.5rem;   
+    padding-inline: clamp(1.5rem, calc(1.148rem + 1.502vw), 2.5rem);   
 
     /* Kľúčové vlastnosti pre scroll: */
     height: 100%;
-    max-height: 45rem;
+    max-height: clamp(42.9rem, calc(45.739rem - 3.155vw), 45rem);
     overflow-y: auto; /* Ak je zoznam dlhý, bude sa skrolovať len vnútro */    
 }
 
 /*nastavenie vzhladu "Order Confirmed" */
 .order-modal__title {
     font-size: 2.5rem;
-    color: var(--Rose__900);
+    color: var(--clr-rose-900);
     margin-block: 1.15rem clamp(0.5rem, calc(0.482rem + 0.075vw), 0.55rem);
     line-height: 1.2;
 }
 
 /* nastavenie vzladu pre subtitle */
 .order-modal__subtitle {
-    color: var(--Rose__500);
+    color: var(--clr-rose-500);
     margin: 0;
     padding-block-end: 2.05rem;
 }
 
 /* nastavenie kontajnera pre zoznam objednanych produktov */
 .order-modal__summary {
-    background-color: var(--Rose__50);
+    background-color: var(--clr-rose-50);
     border-radius: 0.5rem;
     padding-inline-start: 1.5rem;
     padding-inline-end: 1.535rem;
     padding-block-start: 1.5rem;
+}
+
+.order-modal__item:last-of-type .order-modal__separator /* Skrytie separatora vnútri posledného produktu v zozname verzie .confirmed*/{
+    display: none;
+}
+
+/* nastavenie poloziek */
+.order-modal__item {
+    display: grid;
+    grid-template-columns: 2rem clamp(11.5rem, calc(10.268rem + 5.258vw), 15rem) auto;    
 }
 
 /* nastavenie obrazka */
@@ -520,17 +554,11 @@ picture img {
     align-self: center;
 }
 
-/* nastavenie poloziek */
-.order-modal__item {
-    display: grid;
-    grid-template-columns: 2rem clamp(11.5rem, calc(10.268rem + 5.258vw), 15rem) auto;    
-}
-
 /* nastavenie nazvu produktu */
 .order-modal__item-name {
     font-size: 0.875rem;
     font-weight: 600;
-    color: var(--Rose__900);
+    color: var(--clr-rose-900);
     letter-spacing: -0.005rem;
     margin: 0;
     padding-inline-start: 1.975rem;
@@ -542,16 +570,6 @@ picture img {
     text-overflow: ellipsis;
 }
 
-/* nastavenie vzhladu a zarovnania celkovej ceny za produkt */
-.order-modal__item-subtotal {
-    justify-self: end; 
-    align-self: center;
-    font-family: 'Red Hat Text', sans-serif;
-    font-weight: 600;
-    font-size: 1.0rem;
-    color: var(--Rose__900);
-}
-
 .order-modal__item-meta {
     display: grid;
     grid-template-columns: 1.85rem auto;
@@ -559,11 +577,34 @@ picture img {
     padding-block-start: 0.55rem;
 }
 
+/* nastavenie vzhladu mnozstva */
+.order__item-count {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--clr-red);
+}
+
+/* nastavenie vzhladu jednotkovej ceny */
+.order__item-price {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--clr-rose-500);
+}
+
+/* nastavenie vzhladu a zarovnania celkovej ceny za produkt */
+.order-modal__item-subtotal {
+    justify-self: end; 
+    align-self: center;
+    font-weight: 600;
+    font-size: 1.0rem;
+    color: var(--clr-rose-900);
+}
+
 /* nastavenie deliacej ciary */
 .order-modal__separator {
     grid-column: 1 / -1;
     height: 0.0625rem;
-    background-color: var(--Rose__100);
+    background-color: var(--clr-rose-100);
     border: none;
     width: 100%;
     margin-block-start: 0.95rem;
@@ -574,7 +615,7 @@ picture img {
 .order-modal__separator-second {
     display: block;      /* Zabezpečí, že sa prvok vykreslí */
     height: 0.0625rem;
-    background-color: var(--Rose__100);
+    background-color: var(--clr-rose-100);
     border: none;
     width: 100%;
     margin-block-start: 1.5rem;
@@ -599,7 +640,7 @@ picture img {
 .order-modal__total-price {
     font-size: 1.5rem;
     font-weight: 600;
-    color: var(--Rose__900);
+    color: var(--clr-rose-900);
     letter-spacing: 0.02rem;
     margin: 0;
 }
@@ -611,60 +652,19 @@ picture img {
     border-radius: 2rem;
     margin-block-start: 2rem;
     padding-block: 1rem;
-    background-color: var(--Red);
+    background-color: var(--clr-red);
 
     /*nastavenie textu tlacidla */
-    font-family: 'Red Hat Text', sans-serif;
     font-size: 1rem;
     font-weight: 600;
-    color: var(--Rose__50);
+    color: var(--clr-rose-50);
 }
 
 /*nastavenie aktivneho tlacidla "Start New Order" */
 .order-modal__btn-new:hover {
-    background-color: var(--Red10);
+    background-color: var(--clr-red-dark);
     cursor: pointer;
     transition: background-color 0.3s;
-}
-
-/* nastavenie vzhladu mnozstva */
-.order__item-count {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--Red);
-}
-
-/* nastavenie vzhladu jednotkovej ceny */
-.order__item-price {
-    font-size: 0.85rem;
-    font-weight: 400;
-    color: var(--Rose__500);
-}
-
-/* VYPNUTIE JEDNOTLIVYCH VERZII */
-/* predvolene zobrazeny prazdny kosik */
-.cart__state--empty {
-    display: flex;
-}
-
-/* vypnutie verzie .confirmed */
-.order-modal {
-    display: none;
-}
-
-/* skryt verziu selected - plu/minus verziu, kym tlacidlo nedostane triedu .active*/
-.quantity-content {
-    display: none;
-}
-
-.product__add--btn.active .add-content, /* skryt tlacidlo "Add to cart" */
-.cart__items-container .cart__item:last-child .separator, /* Skrytie separatora vnútri posledného produktu v zozname verzie .selected*/
-.order-modal__summary .order-modal__item:last-of-type .order-modal__separator, /* Skrytie separatora vnútri posledného produktu v zozname verzie .confirmed*/
-.cart__total, 
-.cart__delivery-info, 
-.cart__btn-confirm, 
-.separator-second {
-    display: none;
 }
 
 /* DEFINOVANIE FOOTER */
@@ -675,11 +675,23 @@ picture img {
 }
 
 .attribution-link { 
-    color: var(--Blue); 
+    color: var(--clr-blue); 
 }
 
 /* DESKTOP VERZIA */
 @media (min-width: 64rem) {
+    /*prefers-reduced-motion: reduce*/
+    ::before,
+    ::after {
+        animation-delay: -1ms;
+        animation-duration: 1ms;
+        animation-iteration-count: 1;
+        background-attachment: initial;
+        scroll-behavior: auto;
+        transition-duration: 0s;
+        transition-delay: 0s;
+    }
+
     .card {
         grid-template-columns: 1fr 24.063rem;
         align-items: flex-start;
@@ -688,21 +700,18 @@ picture img {
 
     .card__deserts {
         grid-template-columns: repeat(3, 1fr);
-        column-gap: 1.5rem;
+        
+    }
+
+    .product__name {
+        letter-spacing: -0.009rem;
     }
 
     .product__add--btn {
-        top: 91%;   
-    }
-
-    .order-modal {
-        padding-block-start: 21.1rem;        
+        top: 90.75%;   
     }
 
     .order-modal__content {
-        border-radius: 0.8rem; 
-        padding-inline: 2.5rem;  
-        height: 100%;
-        max-height: 42.9rem;
-    }    
+        border-radius: 0.8rem;         
+    }     
 }

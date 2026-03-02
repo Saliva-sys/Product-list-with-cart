@@ -19,7 +19,8 @@
 
     <div class="product__page">
       <h1 class="card__title">Desserts</h1>
-      <section class="card__deserts">             
+      <section class="card__deserts" aria-labelledby="desserts-heading">            
+        <h2 id="desserts-heading" class="sr-only">Our available desserts</h2>
       </section>  
     </div>
     
@@ -27,45 +28,41 @@
       <h2 class="cart__quantity">Your Cart (<span id="cart-count">0</span>)</h2>
       
       <div class="cart__state--empty">
-        <img src="./assets/images/illustration-empty-cart.svg" alt="empty cart">
+        <img src="./assets/images/illustration-empty-cart.svg" alt="" aria-hidden="true">
         <span class="cart__info">Your added items will appear here</span>
       </div>
 
       <div class="cart__state--selected">        
-        <div class="cart__items-container">   
-        </div>        
+        <div class="cart__items-container"></div>        
         <div class="separator-second"></div> 
       
         <div class="cart__total">
             <span>Order Total</span>
-            <strong class="cart__total-price">$46.50</strong>
+            <strong class="cart__total-price">$0.00</strong>
         </div>
 
         <div class="cart__delivery-info">
-            <img src="./assets/images/icon-carbon-neutral.svg" alt="tree">
+            <img src="./assets/images/icon-carbon-neutral.svg" alt="" aria-hidden="true">
             <p>This is a <span>carbon-neutral</span> delivery</p>
         </div>
 
-        <button class="cart__btn-confirm">Confirm Order</button>
+        <button type="button" class="cart__btn-confirm">Confirm Order</button>
       </div>        
     </aside>
-
   </main> 
   
-  <section class="order-modal">    
+  <section class="order-modal" aria-modal="true" role="dialog">   
     <div class="order-modal__content">
-        <img src="./assets/images/icon-order-confirmed.svg" alt="confirmed">
+        <img src="./assets/images/icon-order-confirmed.svg" alt="" aria-hidden="true">
         <h2 class="order-modal__title">Order Confirmed</h2>
         <p class="order-modal__subtitle">We hope you enjoy your food!</p>
         
         <div class="order-modal__summary">
-          <div class="order-modal__items-container"></div>
-          
+          <div class="order-modal__items-container"></div>          
           <div class="order-modal__separator-second"></div>
-
           <div class="order-modal__total-container">
               <span>Order Total</span>
-              <strong class="order-modal__total-price">$46.50</strong>
+              <strong class="order-modal__total-price">$0.00</strong>
           </div>
         </div> 
 

@@ -1,109 +1,94 @@
-// 1. vytvorenie priestoru, do ktoreho sa budu ukladat vybrane produkty
+// 1. Vytvorenie priestoru pre vybrané produkty
 let cart = []; 
 
-// 2. Urcenie miesta v HTML, pod ktorym sa budu produkty ukladat / zobrazovat
+// 2. Určenie miesta v HTML pre produkty
 const productsContainer = document.querySelector('.card__deserts');
 
-// 3. Načítanie dát zo suboru .json
+// 3. Načítanie dát zo súboru .json
 fetch('./data.json')
-  .then(response => response.json()) //zabezpeci, ze script bude vediet nacitat udaje z .json
+  .then(response => response.json())
   .then(data => {
+    let allProductsHTML = ''; // Pripravíme si reťazec, aby sme nerobili innerHTML += v cykle
 
-// 4. Zabezpeci, za script prejde každý produkt v zozname z .json a pomenuje ho product
     data.forEach(product => {
-      
-// 5. Vytvorenie "šablóny" pre jeden produkt, presna struktura z html so zamenenim odkazov a nazvov za oznacenie v dokumente .json
-      const productHTML = `
-        <article class="product__card" data-name="${product.name}" data-thumbnail=${product.image.thumbnail}>
-
+      // Šablóna upravená pre lepšiu sémantiku a prístupnosť
+      allProductsHTML += `
+        <article class="product__card" data-name="${product.name}" data-thumbnail="${product.image.thumbnail}">
           <div class="product__image--container">
             <picture>
               <source media="(min-width: 600px)" srcset="${product.image.desktop}">
               <source media="(min-width: 400px)" srcset="${product.image.tablet}">
-              <img src="${product.image.mobile}" alt="${product.name}">
+              <img src="${product.image.mobile}" alt="" aria-hidden="true">
             </picture>
 
             <button type="button" class="product__add--btn">
-              <div class="add-content">
-                <img src="./assets/images/icon-add-to-cart.svg" alt="add to cart"> 
-                <span class="add-cart"> Add to Cart</span>
-              </div>
-
-              <div class="quantity-content">
-                <div class="qty-btn-container">
-                    <img src="./assets/images/icon-decrement-quantity.svg" alt="minus" class="qty-img">
-                </div>
-                <span>1</span>
-                <div class="qty-btn-container">
-                    <img src="./assets/images/icon-increment-quantity.svg" alt="plus" class="qty-img">
-                </div>
-              </div>
+              <span class="add-content">
+                <img src="./assets/images/icon-add-to-cart.svg" alt="" aria-hidden="true">
+                <span class="add-cart">Add to Cart</span>
+              </span>
             </button>
           </div>
 
           <div class="product__info">
-            <span class="product__category">${product.category}</span>
+            <p class="product__category">${product.category}</p>
             <h2 class="product__name">${product.name}</h2>          
-            <span class="product__price">${product.price.toFixed(2)}</span>
+            <strong class="product__price">${product.price.toFixed(2)}</strong>
           </div>
-          
         </article>
-        `;
-        
-      productsContainer.innerHTML += productHTML;
+      `;
     });
-  })
-  .catch(error => console.error("Chyba:", error));
 
-// Prepnutie tlačidla na červené (stav Active)
-// POSLUCHÁČ NA KLIKNUTIA (zatiaľ len pre pridanie do košíka)
+    // Vložíme všetky produkty naraz - lepšie pre výkon
+    productsContainer.innerHTML = allProductsHTML;
+  })
+  .catch(error => console.error("Chyba pri načítaní:", error));
+
+// ==========================================
+// EVENT LISTENER PRE PRIDANIE DO KOŠÍKA
+// ==========================================
 productsContainer.addEventListener('click', (e) => {
-    // 1. overenie, či používateľ klikol na biele tlačidlo "Add to Cart"
     const addBtn = e.target.closest('.add-content');
 
     if (addBtn) {
-        // 2. zistenie nadradenej karty produktu a samotné tlačidlo
         const productCard = addBtn.closest('.product__card');
         const parentBtn = addBtn.closest('.product__add--btn');
 
-        // ZÍSKANIE DÁT Z KARTY
         const name = productCard.getAttribute('data-name');
-        //  vyber textu pre cenu a jeho zmena na číslo
-        const price = parseFloat(productCard.querySelector('.product__price').innerText);
+        const price = parseFloat(productCard.querySelector('.product__price').innerText.replace('$', ''));
         const thumbnail = productCard.getAttribute('data-thumbnail');
 
-        // 3. Prepnutie vizuálu (pridanie CSS tried)
-        // skryt "Add to Cart" a zobrazit "Quantity" (plus/mínus)
+        // Prepnutie vizuálu tlačidla na "Quantity" stav
         parentBtn.classList.add('active');
-        
-        // pridanie červeneho border obrázku 
         productCard.classList.add('is-selected');
 
-        console.log("Tlačidlo prepnuté na červené pre:", productCard.getAttribute('data-name'));
-        // VOLANIE FUNKCIE PRE PRIDANIE
+        // Dynamicky vložíme vnútro tlačidla (vyhneme sa nested divom v button)
+        parentBtn.innerHTML = `
+            <span class="quantity-content">
+                <span class="qty-btn-container" data-action="decrement" role="button" aria-label="Decrease quantity">
+                    <img src="./assets/images/icon-decrement-quantity.svg" alt="" aria-hidden="true">
+                </span>
+                <span class="qty-count">1</span>
+                <span class="qty-btn-container" data-action="increment" role="button" aria-label="Increase quantity">
+                    <img src="./assets/images/icon-increment-quantity.svg" alt="" aria-hidden="true">
+                </span>
+            </span>
+        `;
+
         addToCart(name, price, thumbnail);
     }
 });
 
-//pridanie objektu do poľa cart.
 function addToCart(name, price, thumbnail) {
-    // kontrola, či tam už náhodou nie je (ochrana)
     const existingProduct = cart.find(item => item.name === name);
-
     if (!existingProduct) {
-        cart.push({
-            name: name,
-            price: price,
-            thumbnail: thumbnail,
-            quantity: 1 // Začíname s jedným kusom
-        });
+        cart.push({ name, price, thumbnail, quantity: 1 });
     }
-
-    // Vykreslenie košíka nanovo
     renderCart();
 }
 
-// Funkcia renderCart prepína stavy (prázdny/plný) a vypisuje produkty.
+// ==========================================
+// RENDEROVANIE KOŠÍKA
+// ==========================================
 function renderCart() {
     const emptyState = document.querySelector('.cart__state--empty');
     const selectedState = document.querySelector('.cart__state--selected');
@@ -112,28 +97,28 @@ function renderCart() {
     const cartTotal = document.querySelector('.cart__total');
     const cartDelivery = document.querySelector('.cart__delivery-info');
     const cartBtnConfirm = document.querySelector('.cart__btn-confirm');
-    const separatorSecond = document.querySelector('.separator-second');
+    
+    let totalAmount = 0;
+    let totalItemsCount = 0;
 
     if (cart.length > 0) {
-        // Ak niečo v košíku je
         emptyState.style.display = 'none';
+        emptyState.setAttribute('aria-hidden', 'true'); // Čítačka toto úplne ignoruje
+
         selectedState.style.display = 'block';
+        selectedState.setAttribute('aria-hidden', 'false'); // Čítačka toto číta
 
         if (cartTotal) cartTotal.style.display = 'flex';
         if (cartDelivery) cartDelivery.style.display = 'flex';
         if (cartBtnConfirm) cartBtnConfirm.style.display = 'block';
-        if (separatorSecond) separatorSecond.style.display = 'block'; // Zapnúť
 
-        cartItemsContainer.innerHTML = ''; // vycistenie stareho zoznam
-        let totalAmount = 0;
-        let totalItemsCount = 0;
-
+        let cartHTML = ''; // Opäť výkon: skladáme string mimo DOMu
         cart.forEach(item => {
             const itemTotal = item.price * item.quantity;
             totalAmount += itemTotal;
             totalItemsCount += item.quantity;
 
-            cartItemsContainer.innerHTML += `
+            cartHTML += `
                 <div class="cart__item">
                     <div class="cart__item-details">
                         <p class="cart__item-name">${item.name}</p>
@@ -143,79 +128,91 @@ function renderCart() {
                             <span class="cart__item-subtotal">$${itemTotal.toFixed(2)}</span>
                         </div>
                     </div>
-                    <button class="cart__item-remove" onclick="removeFromCart('${item.name}')">
-                        <img src="./assets/images/icon-remove-item.svg" alt="remove">
+                    <button type="button" class="cart__item-remove" onclick="removeFromCart('${item.name}')" aria-label="Remove ${item.name} from cart">
+                        <img src="./assets/images/icon-remove-item.svg" alt="" aria-hidden="true">
                     </button>
                     <div class="separator"></div>
                 </div>
             `;
         });
 
-        // aktualizacia celkovej sumy a poctu v zatvorke
-        document.querySelector('.cart__total-price').innerText = `$${totalAmount.toFixed(2)}`;
+        cartItemsContainer.innerHTML = cartHTML;
+        
+        // Aktualizácia sumy a počtu
+        const totalPriceElement = document.querySelector('.cart__total-price');
+        if (totalPriceElement) {
+            totalPriceElement.innerText = `$${totalAmount.toFixed(2)}`;
+        }
         cartCountElement.innerText = totalItemsCount;
 
     } else {
-        // Ak je košík prázdny
+        // Ak je košík prázdny, všetko skryjeme
         emptyState.style.display = 'flex';
+        emptyState.setAttribute('aria-hidden', 'false');
+
         selectedState.style.display = 'none';
+        selectedState.setAttribute('aria-hidden', 'true');
         cartCountElement.innerText = '0';
+        
         if (cartTotal) cartTotal.style.display = 'none';
         if (cartDelivery) cartDelivery.style.display = 'none';
         if (cartBtnConfirm) cartBtnConfirm.style.display = 'none';
-        if (separatorSecond) separatorSecond.style.display = 'none'; // Vypnúť
     }
 }
 
 // ==========================================
-// 4. KROK: OŽIVENIE TLAČIDIEL PLUS A MÍNUS
+// PLUS A MÍNUS LOGIKA
 // ==========================================
 productsContainer.addEventListener('click', (e) => {
-    // overenie, či používateľ klikol na kontajner s plusom alebo mínusom
-    const plusContainer = e.target.closest('.qty-btn-container:has(img[alt="plus"])') || e.target.closest('img[alt="plus"]');
-    const minusContainer = e.target.closest('.qty-btn-container:has(img[alt="minus"])') || e.target.closest('img[alt="minus"]');
+    const plusBtn = e.target.closest('[data-action="increment"]');
+    const minusBtn = e.target.closest('[data-action="decrement"]');
 
-    if (plusContainer || minusContainer) {
-        // 1. zistenie karty produktu, aby sme vedeli, o ktorý dezert ide
-        const productCard = (plusContainer || minusContainer).closest('.product__card');
+    if (plusBtn || minusBtn) {
+        const productCard = (plusBtn || minusBtn).closest('.product__card');
         const name = productCard.getAttribute('data-name');
-
-        // 2. najdenie tohto produktu v našom poli 'cart'
         const itemInCart = cart.find(item => item.name === name);
 
         if (itemInCart) {
-            if (plusContainer) {
-                itemInCart.quantity += 1; // Pripočítame
-            } else {
-                itemInCart.quantity -= 1; // Odpočítame
-            }
+            if (plusBtn) itemInCart.quantity += 1;
+            else itemInCart.quantity -= 1;
 
-            // 3. Ak množstvo klesne na 0, produkt z košíka bude odstraneny
             if (itemInCart.quantity <= 0) {
-                cart = cart.filter(item => item.name !== name);
-                
-                // resetovanie vizuálu tlačidla späť na biele
-                productCard.classList.remove('is-selected');
-                productCard.querySelector('.product__add--btn').classList.remove('active');
-            }
-
-            // 4. AKTUALIZÁCIA: Prekreslenie kosika a prepisanie cisla na červenom tlačidle
-            renderCart();
-            
-            // prepisanie cisla 1, 2, 3... priamo v tom červenom tlačidle
-            const qtyDisplay = productCard.querySelector('.quantity-content span');
-            if (qtyDisplay) {
-                qtyDisplay.innerText = itemInCart ? itemInCart.quantity : 1;
+                removeFromCart(name);
+            } else {
+                renderCart();
+                const qtyDisplay = productCard.querySelector('.qty-count');
+                if (qtyDisplay) qtyDisplay.innerText = itemInCart.quantity;
             }
         }
     }
 });
 
 // ==========================================
-// 5. KROK: POTVRDENIE OBJEDNÁVKY (MODAL)
+// ODSTRÁNENIE Z KOŠÍKA (GLOBÁLNA FUNKCIA)
 // ==========================================
+window.removeFromCart = function(productName) {
+    cart = cart.filter(item => item.name !== productName);
+    renderCart();
 
-// najdenie potrebnych prvkov v HTML
+    const productCard = document.querySelector(`.product__card[data-name="${productName}"]`);
+    if (productCard) {
+        productCard.classList.remove('is-selected');
+        const btn = productCard.querySelector('.product__add--btn');
+        if (btn) {
+            btn.classList.remove('active');
+            btn.innerHTML = `
+                <span class="add-content">
+                    <img src="./assets/images/icon-add-to-cart.svg" alt="" aria-hidden="true">
+                    <span class="add-cart">Add to Cart</span>
+                </span>
+            `;
+        }
+    }
+};
+
+// ==========================================
+// MODAL A POTVRDENIE
+// ==========================================
 const confirmBtn = document.querySelector('.cart__btn-confirm');
 const orderModal = document.querySelector('.order-modal');
 const modalItemsContainer = document.querySelector('.order-modal__items-container');
@@ -223,19 +220,16 @@ const startNewOrderBtn = document.querySelector('.order-modal__btn-new');
 
 if (confirmBtn) {
     confirmBtn.addEventListener('click', () => {
-        // 1. vycistenie stareho obsahu modálneho okna
-        modalItemsContainer.innerHTML = '';
+        let modalHTML = '';
         let orderTotal = 0;
 
-        // 2. overenie produktov v košíku a ich vykreslenie do modalu
         cart.forEach(item => {
             const itemTotal = item.price * item.quantity;
             orderTotal += itemTotal;
 
-            modalItemsContainer.innerHTML += `
+            modalHTML += `
                 <div class="order-modal__item">
-                    <img src="${item.thumbnail}" alt="${item.name}" class="order-modal__item-img">
-
+                    <img src="${item.thumbnail}" alt="" aria-hidden="true" class="order-modal__item-img">
                     <div class="order-modal__item-info">
                         <p class="order-modal__item-name">${item.name}</p>
                         <div class="order-modal__item-meta">
@@ -246,44 +240,36 @@ if (confirmBtn) {
                     <strong class="order-modal__item-subtotal">$${itemTotal.toFixed(2)}</strong>
                     <div class="order-modal__separator"></div>
                 </div>
-                
             `;
         });
 
-        // 3. doplnenie celkovej sumy do modalu
+        modalItemsContainer.innerHTML = modalHTML;
         document.querySelector('.order-modal__total-price').innerText = `$${orderTotal.toFixed(2)}`;
-
-        // 4. zobrazenie modal 
         orderModal.style.display = 'flex';
-
-        // 2. POSUNIE STRÁNKU NA ZAČIATOK (to je to, čo hľadáš)
         window.scrollTo(0, 0);
-        
-        // zablokovanie scrollovania pozadia, kým je modal otvorený
         document.body.style.overflow = 'hidden';
     });
 }
 
-// 6. KROK: TLAČIDLO "START NEW ORDER" (RESET VŠETKÉHO)
 if (startNewOrderBtn) {
     startNewOrderBtn.addEventListener('click', () => {
-        // 1. vyprazdnenie kosika (pole)
         cart = [];
-
-        // 2. skrytie modal
         orderModal.style.display = 'none';
         document.body.style.overflow = 'auto';
 
-        // 3. resetovanie vizuálu všetkých produktov na stránke (všetky tlačidlá na biele)
         document.querySelectorAll('.product__card').forEach(card => {
             card.classList.remove('is-selected');
             const btn = card.querySelector('.product__add--btn');
-            if (btn) btn.classList.remove('active');
-            const qtySpan = card.querySelector('.quantity-content span');
-            if (qtySpan) qtySpan.innerText = '1';
+            if (btn) {
+                btn.classList.remove('active');
+                btn.innerHTML = `
+                    <span class="add-content">
+                        <img src="./assets/images/icon-add-to-cart.svg" alt="" aria-hidden="true">
+                        <span class="add-cart">Add to Cart</span>
+                    </span>
+                `;
+            }
         });
-
-        // 4. vyprazdnenie kosika
         renderCart();
     });
 }
