@@ -300,11 +300,6 @@ picture img {
     margin: 0;
 } 
 
-/* obrazok pre empty cart */
-.cart__state--empty img {
-    margin-block-start: clamp(2.55rem, calc(2.539rem + 0.045vw), 2.58rem);
-}
-
 /* informativny text "Your added items will appear here" */
 .cart__notice {
     font-size: 0.86rem;
@@ -670,6 +665,11 @@ picture img {
     background-color: var(--clr-red-dark);
     cursor: pointer;
     transition: background-color 0.2s, transform 0.2s, outline 0.2s;
+}
+
+/* obrazok pre empty cart */
+.cart__state--empty img {
+    margin-block-start: clamp(2.55rem, calc(2.539rem + 0.045vw), 2.58rem);
 }
 
 /* zmena vzhladu oramovanie obrazka verzie .selected */
