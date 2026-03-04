@@ -1,6 +1,41 @@
 let cart = []; // 1. Vytvorenie priestoru pre vybrané produkty
 const productsContainer = document.querySelector('.card__deserts'); // 2. Určenie priestoru v HTML kde sa budu zobrazovat produkty
 
+// ==========================================
+// 1. DEFINÍCIA FUNKCIÍ (Aby boli viditeľné pre listenery)
+// ==========================================
+
+function removeFromCart(productName) {
+    cart = cart.filter(item => item.name !== productName);
+    
+    // Reset vizuálu produktu v zozname
+    const productCard = document.querySelector(`.product__card[data-name="${productName}"]`);
+    if (productCard) {
+        productCard.classList.remove('is-selected');
+        const btn = productCard.querySelector('.product__add--btn');
+        if (btn) {
+            btn.classList.remove('active');
+            btn.innerHTML = `
+                <span class="add-content">
+                    <img src="./assets/images/icon-add-to-cart.svg" alt=" " aria-hidden="true">
+                    <span class="add-cart">Add to Cart</span>
+                </span>
+            `;
+        }
+    }
+    renderCart();
+}
+
+// Pridanie do košíka
+function addToCart(name, price, thumbnail) {
+    const existingProduct = cart.find(item => item.name === name);
+    if (!existingProduct) {
+        cart.push({ name, price, thumbnail, quantity: 1 });
+    }
+    renderCart();
+}
+
+
 // prikaz na nacitanie dat zo suboru .json
 fetch('./data.json') 
     .then(response => response.json()) //prikaz, aby script vedel precitat data zo suboru .json
@@ -36,11 +71,11 @@ fetch('./data.json')
                 </article>
             `;    
             
-            // vlozenie vsetkych produktov
-            productsContainer.innerHTML = allProductsHTML;
+            
         });
 
-        
+        // vlozenie vsetkych produktov
+            productsContainer.innerHTML = allProductsHTML;
 
     })
 
@@ -49,45 +84,67 @@ fetch('./data.json')
     // ==========================================
 // EVENT LISTENER PRE PRIDANIE DO KOŠÍKA
 // ==========================================
-productsContainer.addEventListener('click', (e) => {
-    const addBtn = e.target.closest('.add-content');
 
+// Listener pre Add to Cart a +/- tlačidlá
+productsContainer.addEventListener('click', (e) => {
+    // Logika pre pridanie (Add to Cart)
+    const addBtn = e.target.closest('.add-content');
     if (addBtn) {
         const productCard = addBtn.closest('.product__card');
         const parentBtn = addBtn.closest('.product__add--btn');
-
         const name = productCard.getAttribute('data-name');
-        const price = parseFloat(productCard.querySelector('.product__price').innerText.replace('$', ''));
+        const price = parseFloat(productCard.querySelector('.product__price').innerText);
         const thumbnail = productCard.getAttribute('data-thumbnail');
 
-        // Prepnutie vizuálu tlačidla na "Quantity" stav
         parentBtn.classList.add('active');
         productCard.classList.add('is-selected');
-
-        // Dynamicky vložíme vnútro tlačidla (vyhneme sa nested divom v button)
         parentBtn.innerHTML = `
             <span class="quantity-content">
-                <span class="qty-btn-container" data-action="decrement" role="button" aria-label="Decrease quantity">
+                <span class="qty-btn-container" data-action="decrement" role="button">
                     <img src="./assets/images/icon-decrement-quantity.svg" alt="" aria-hidden="true">
                 </span>
                 <span class="qty-count">1</span>
-                <span class="qty-btn-container" data-action="increment" role="button" aria-label="Increase quantity">
+                <span class="qty-btn-container" data-action="increment" role="button">
                     <img src="./assets/images/icon-increment-quantity.svg" alt="" aria-hidden="true">
                 </span>
             </span>
         `;
-
         addToCart(name, price, thumbnail);
+        return; // Ukončíme, aby sa nespustila logika nižšie
+    }
+
+    // Logika pre Increment / Decrement
+    const plusBtn = e.target.closest('[data-action="increment"]');
+    const minusBtn = e.target.closest('[data-action="decrement"]');
+
+    if (plusBtn || minusBtn) {
+        const productCard = (plusBtn || minusBtn).closest('.product__card');
+        const name = productCard.getAttribute('data-name');
+        const itemInCart = cart.find(item => item.name === name);
+
+        if (itemInCart) {
+            if (plusBtn) itemInCart.quantity += 1;
+            else itemInCart.quantity -= 1;
+
+            if (itemInCart.quantity <= 0) {
+                removeFromCart(name);
+            } else {
+                renderCart();
+                const qtyDisplay = productCard.querySelector('.qty-count');
+                if (qtyDisplay) qtyDisplay.innerText = itemInCart.quantity;
+            }
+        }
     }
 });
 
-function addToCart(name, price, thumbnail) {
-    const existingProduct = cart.find(item => item.name === name);
-    if (!existingProduct) {
-        cart.push({ name, price, thumbnail, quantity: 1 });
+// Listener pre krížik v košíku (Delegácia udalostí)
+document.querySelector('.cart__items-container').addEventListener('click', (e) => {
+    const removeBtn = e.target.closest('.cart__item-remove');
+    if (removeBtn) {
+        const name = removeBtn.getAttribute('data-product');
+        removeFromCart(name);
     }
-    renderCart();
-}
+});
 
 // ==========================================
 // RENDEROVANIE KOŠÍKA

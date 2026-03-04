@@ -15,13 +15,13 @@
     --clr-black-alpha: hsl(0, 0%, 0%, 50%);
 }
 
+* {
+    box-sizing: border-box;     
+}
+
 button, 
 button * {
     font-family: inherit;
-}
-
-* {
-    box-sizing: border-box;     
 }
 
 body {
@@ -34,10 +34,10 @@ body {
 
 .sr-only {
   position: absolute;
-  width: 1px;
-  height: 1px;
+  width: 0.0625rem;
+  height: 0.0625rem;
   padding: 0;
-  margin: -1px;
+  margin: -0.0625rem;
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
@@ -508,22 +508,25 @@ picture img {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100%; /* Vyplní celú obrazovku */
     background-color: var(--clr-black-alpha);
+    
+    display: none; /* JS to prepne na flex */
     justify-content: center;
-    align-items: flex-start; /* Dôležité pre scroll odvrchu */
-    overflow-y: auto;        /* Povolený scroll celého modalu */
-    padding-block-start: clamp(5.95rem, calc(0.616rem + 22.761vw), 21.1rem);
-} 
+    align-items: center; /* Centrovanie obsahu */
+    overflow-y: auto; 
+    padding: 1rem; /* Rezerva, aby sa modal nedotýkal okrajov na malých mobiloch */
+}
 
 /* priestor pre zobrazenie obsahu kosika */
 .order-modal__content {
     background-color: var(--clr-white);
     width: 100%;
     max-width: 37rem;
-    border-radius: 0.8rem 0.8rem 0 0; /* Zaoblené rohy len hore na mobile */
-    padding-block-start: 2.5rem;
-    padding-inline: clamp(1.5rem, calc(1.148rem + 1.502vw), 2.5rem);   
+    border-radius: 0.8rem;
+    padding: 2.5rem;
+    margin: auto; /* Pomáha pri skrolovaní dlhého obsahu */
+    position: relative;
 
     /* Kľúčové vlastnosti pre scroll: */
     height: 100%;
@@ -698,18 +701,6 @@ picture img {
 
 /* DESKTOP VERZIA */
 @media (min-width: 64rem) {
-    /*prefers-reduced-motion: reduce*/
-    ::before,
-    ::after {
-        animation-delay: -1ms;
-        animation-duration: 1ms;
-        animation-iteration-count: 1;
-        background-attachment: initial;
-        scroll-behavior: auto;
-        transition-duration: 0s;
-        transition-delay: 0s;
-    }
-
     .card {
         grid-template-columns: 1fr 24rem;
         column-gap: 1.95rem;
@@ -734,7 +725,14 @@ picture img {
         
     .cart__item-subtotal {
         letter-spacing: -0.01rem;
-    }
+    }    
+}
 
-    
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
