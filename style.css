@@ -137,7 +137,6 @@ picture img {
     height: 100%;
     max-height: clamp(2.72rem, calc(2.801rem - 0.09vw), 2.78rem);
     top: 90%;
-
     /* definovanie vzhladu tlacidla */
     border-radius: 1.35rem;
     border: none;
