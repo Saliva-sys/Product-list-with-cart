@@ -93,7 +93,7 @@ picture img {
 } 
 
 /* zmena vzhladu oramovanie obrazka verzie .selected */
-.product__card.is-selected picture img {
+.is-selected picture img {
     outline: 2px solid var(--clr-red);
     outline-offset: -2px;
     transition: outline 0.2s ease-in-out;
@@ -108,14 +108,8 @@ picture img {
     width: 100%;
 } 
 
-/* vlastnosti obrazka */
-.product__image--container picture {
-    width: 100%;
-    max-width: 20.5rem;
-} 
-
 /* vlastnosti obrazka na mobile */
-.product__image--container picture img {
+.product__card picture  {
     width: clamp(15.65rem, calc(22.208rem - 7.286vw), 20.5rem);
     height: clamp(13.17rem, calc(12.529rem + 2.734vw), 14.99rem);
 } 
@@ -155,7 +149,7 @@ picture img {
 } 
 
 /* zobrazit mnozstvo a znamienka +/- */
-.product__add--btn.active .quantity-content {
+.active .quantity-content {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -165,7 +159,7 @@ picture img {
     color: var(--clr-white);
 }
 
-.product__add--btn.active .add-content {
+.active .add-content {
     display: none;
 }
 
@@ -511,7 +505,6 @@ picture img {
     height: 100%; /* Vyplní celú obrazovku */
     background-color: var(--clr-black-alpha);
     
-    display: none; /* JS to prepne na flex */
     justify-content: center;
     align-items: center; /* Centrovanie obsahu */
     overflow-y: auto; 
@@ -729,10 +722,16 @@ picture img {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, ::before, ::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+  html:focus-within {
+        scroll-behavior: auto;
+    }
+    
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms;
+        animation-iteration-count: 1;
+        transition-duration: 0.01ms;
+        scroll-behavior: auto;
+    }
 }
