@@ -1,49 +1,52 @@
-// 1. Vytvorenie priestoru pre vybrané produkty
-let cart = []; 
+let cart = []; // 1. Vytvorenie priestoru pre vybrané produkty
+const productsContainer = document.querySelector('.card__deserts'); // 2. Určenie priestoru v HTML kde sa budu zobrazovat produkty
 
-// 2. Určenie miesta v HTML pre produkty
-const productsContainer = document.querySelector('.card__deserts');
+// prikaz na nacitanie dat zo suboru .json
+fetch('./data.json') 
+    .then(response => response.json()) //prikaz, aby script vedel precitat data zo suboru .json
 
-// 3. Načítanie dát zo súboru .json
-fetch('./data.json')
-  .then(response => response.json())
-  .then(data => {
-    let allProductsHTML = ''; // Pripravíme si reťazec, aby sme nerobili innerHTML += v cykle
+    // zadefinovanie nacitavania a urcenie struktury zobrazovania produktov
+    .then(data => {
+        let allProductsHTML = ''; // Priprava retazca, aby sme nerobili innerHTML += v cykle
 
-    data.forEach(product => {
-      // Šablóna upravená pre lepšiu sémantiku a prístupnosť
-      allProductsHTML += `
-        <article class="product__card" data-name="${product.name}" data-thumbnail="${product.image.thumbnail}">
-          <div class="product__image--container">
-            <picture>
-              <source media="(min-width: 600px)" srcset="${product.image.desktop}">
-              <source media="(min-width: 400px)" srcset="${product.image.tablet}">
-              <img src="${product.image.mobile}" alt="" aria-hidden="true">
-            </picture>
+        // zadefinovanie struktury
+        data.forEach(product => {
+            allProductsHTML += `
+                <article class="product__card" data-name="${product.name}" data-thumbnail="${product.image.thumbnail}">
+                    <div class="product__image--container">
+                        <picture>
+                        <source media="(min-width: 600px)" srcset="${product.image.desktop}">
+                        <source media="(min-width: 400px)" srcset="${product.image.tablet}">
+                        <img src="${product.image.mobile}" alt="" aria-hidden="true">
+                        </picture>
 
-            <button type="button" class="product__add--btn">
-              <span class="add-content">
-                <img src="./assets/images/icon-add-to-cart.svg" alt="" aria-hidden="true">
-                <span class="add-cart">Add to Cart</span>
-              </span>
-            </button>
-          </div>
+                        <button type="button" class="product__add--btn">
+                            <span class="add-content">
+                            <img src="./assets/images/icon-add-to-cart.svg" alt=" " aria-hidden="true">
+                            <span class="add-cart">Add to Cart</span>
+                            </span>
+                        </button>
+                    </div>
 
-          <div class="product__info">
-            <p class="product__category">${product.category}</p>
-            <h2 class="product__name">${product.name}</h2>          
-            <strong class="product__price">${product.price.toFixed(2)}</strong>
-          </div>
-        </article>
-      `;
-    });
+                    <div class="product__info">
+                        <p class="product__category">${product.category}</p>
+                        <h2 class="product__name">${product.name}</h2>          
+                        <strong class="product__price">${product.price.toFixed(2)}</strong>
+                    </div>
+                </article>
+            `;    
+            
+            // vlozenie vsetkych produktov
+            productsContainer.innerHTML = allProductsHTML;
+        });
 
-    // Vložíme všetky produkty naraz - lepšie pre výkon
-    productsContainer.innerHTML = allProductsHTML;
-  })
-  .catch(error => console.error("Chyba pri načítaní:", error));
+        
 
-// ==========================================
+    })
+
+    .catch(error => console.error("Chyba pri načítaní:", error)); //kontrola chyby
+
+    // ==========================================
 // EVENT LISTENER PRE PRIDANIE DO KOŠÍKA
 // ==========================================
 productsContainer.addEventListener('click', (e) => {
@@ -202,7 +205,7 @@ window.removeFromCart = function(productName) {
             btn.classList.remove('active');
             btn.innerHTML = `
                 <span class="add-content">
-                    <img src="./assets/images/icon-add-to-cart.svg" alt="" aria-hidden="true">
+                    <img src="./assets/images/icon-add-to-cart.svg" alt=" " aria-hidden="true">
                     <span class="add-cart">Add to Cart</span>
                 </span>
             `;
@@ -264,7 +267,7 @@ if (startNewOrderBtn) {
                 btn.classList.remove('active');
                 btn.innerHTML = `
                     <span class="add-content">
-                        <img src="./assets/images/icon-add-to-cart.svg" alt="" aria-hidden="true">
+                        <img src="./assets/images/icon-add-to-cart.svg" alt=" " aria-hidden="true">
                         <span class="add-cart">Add to Cart</span>
                     </span>
                 `;
