@@ -381,14 +381,6 @@ picture img {
     margin: 0;
 }
 
-/* tlacidlo X na odstranenie vybraneho produktu z kosika */
-.cart__item-remove img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    margin: 0;
-}
-
 /* nastavenie aktivneho tladidla remove */
 .cart__item-remove:hover {
     outline: 2px solid var(--clr-rose-900);
@@ -396,10 +388,6 @@ picture img {
     border: none;
     cursor: pointer;
     transition: background-color 0.2s, transform 0.2s, outline 0.2s;
-}
-
-.cart__item-remove:hover img {
-    filter: brightness(0); /* Zmení ikonku na čiernu pri hoveri */
 }
 
 /* deliaca ciara medzi produktami */
@@ -425,12 +413,6 @@ picture img {
     padding-block: 1.55rem 1.65rem;
 } 
 
-/* text "Order Total" */
-.cart__total span {
-    font-size: 0.88rem;
-    font-weight: 400;
-} 
-
 /* celkova cena vsetkych produktov v kosiku */
 .cart__total-price {
     font-size: 1.5rem;
@@ -446,23 +428,6 @@ picture img {
     background-color: var(--clr-rose-50);
     border-radius: 0.5rem;
     gap: 0.45rem;
-} 
-
-.cart__delivery-info img {
-    object-fit: contain;
-    width: 1.3rem;
-}
-
-.cart__delivery-info p {
-    font-size: 0.899rem;
-    font-weight: 400;
-    color: var(--clr-rose-900);
-    letter-spacing: -0.01rem;
-}
-
-/* definovanie casti "carbon-neutral" */
-.cart__delivery-info span {
-    font-weight: 600;
 } 
 
 /* tlacidlo pre potvrdenie objednavky "Confirm Order" */
@@ -631,12 +596,6 @@ picture img {
     padding-block: 1.5rem 1.5rem;
 } 
 
-/* text "Order Total" */
-.order-modal__total-container span {
-    font-size: 0.88rem;
-    font-weight: 400;
-}
-
 /* celkova cena objednavky */
 .order-modal__total-price {
     font-size: 1.5rem;
@@ -678,6 +637,48 @@ picture img {
     outline-offset: -2px;
     transition: outline 0.2s ease-in-out;
 }
+
+/* tlacidlo X na odstranenie vybraneho produktu z kosika */
+.cart__item-remove img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    margin: 0;
+}
+
+.cart__item-remove:hover img {
+    filter: brightness(0); /* Zmení ikonku na čiernu pri hoveri */
+}
+
+/* text "Order Total" */
+.cart__total span {
+    font-size: 0.88rem;
+    font-weight: 400;
+} 
+
+.cart__delivery-info img {
+    object-fit: contain;
+    width: 1.3rem;
+}
+
+.cart__delivery-info p {
+    font-size: 0.899rem;
+    font-weight: 400;
+    color: var(--clr-rose-900);
+    letter-spacing: -0.01rem;
+}
+
+/* definovanie casti "carbon-neutral" */
+.cart__delivery-info span {
+    font-weight: 600;
+} 
+
+/* text "Order Total" */
+.order-modal__total-container span {
+    font-size: 0.88rem;
+    font-weight: 400;
+}
+
 
 /* DEFINOVANIE FOOTER */
 .attribution {     
